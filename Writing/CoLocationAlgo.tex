@@ -5,7 +5,7 @@ Suppose the goal of a system owner is to allow couples to co-locate more often, 
 \begin{algorithm}[H]
 \SetAlgoLined
 \KwResult{There are no pairs $(O_i, S_i), (O_j, S_j)$ such that the pairings $(O_i, S_j), (O_j, S_i)$ would be preferred by all parties.} 
- Consider a set of preferences $\{P^{x}_{y,z} \in \mathbb{Z}^+: x \in \{O,S\}, y \in \{1, \dots, n\}, z \in \{1, \dots, m\}\}$ and some of the pairs are submitted together $\{(P^{x}_{y_1,z}, P^{x}_{y_2,z}) \in \mathbb{Z}^+: x \in \{O,S\}, y_1,y_2 \in \{1, \dots, n\}, z \in \{1, \dots, m\}\}$, and indicate pairing by $p_y = 0$ if submitted as a single or $p_{y_1}=y_2, p_{y_2}=p_{y_1}$ if as a couple. This indicates the positive integer preference ranking of either the job owner or seeker ($O$ or $S$) for the $n$ available jobs and $m$ seekers. Also know that $l_n$ is the number of available positions in each job.\;
+ Consider a set of preferences $\{P^{x}_{y,z} \in \mathbb{Z}^+: x \in \{O,S\}, y \in \{1, \dots, n\}, z \in \{1, \dots, m\}\}$ and some of the pairs are submitted together $\{(P^{x}_{y_1,z}, P^{x}_{y_2,z}) \in \mathbb{Z}^+: x \in \{O,S\}, y_1,y_2 \in \{1, \dots, n\}, z \in \{1, \dots, m\}\}$, and indicate pairing by $p_y = 0$ if submitted as a single or $p_{y_1}=y_2, p_{y_2}=p_{y_1}$ if as a couple. To encapsulate the idea of seeking entities consider $\{A_q : q \in \{1, \dots, m_e\}\}$, where each entity $A_i$ can either be a single seeker $(A_i = y)$ or a pair, $(A_i = (y_1, y_2)$. This indicates the positive integer preference ranking of either the job owner or seeker ($O$ or $S$) for the $n$ available jobs and $m$ seekers. Also know that $l_n$ is the number of available positions in each job.\;
  \For{$c \in \{1, \dots, n\}$}{
  For each job, initialize the job owner's hiring slate to be empty \;
  $O_c = \{\null\}$ \;
@@ -18,12 +18,16 @@ Suppose the goal of a system owner is to allow couples to co-locate more often, 
  $m_s =  \sum_{c=1}^m \mathbbm{1}(p_c == 0)$ \;
  Find the number of job seeking entities, in this case a couple counts as one entity. \;
  $m_e = m_s + \frac{m - m_s}{2} $ \;
+ \For{$c \in \{1, \dots, m_e\}$}{
+ For each job seeking entity initialize their status to be \textit{un-slated} \;
+ $I_c = 0$ \;
+ } 
  Check if there are more jobs than seekers, or more seekers than jobs \;
  $a = \max \big(0, m - \sum_{c = 1}^n l_c \big)$\;
  Seek jobs until either all seekers are hired or all jobs are spoken for \;
  \While{\big( $\sum_{c = 1}^m \mathbbm{1}(J_c \neq 0) \leq a $ \big)}{
  Iterate through all the job seeking entities \;
- \For{$c \in \{1, \dots, m_e\}$}{
+ \For{$c_e \in \{1, \dots, m_e\}$}{
  Choose the appropriate seeking process of a single or a couple\;
  \lIf{single}{
   \SetKwFunction{FSingle}{SeekSingle}
@@ -44,7 +48,7 @@ Suppose the goal of a system owner is to allow couples to co-locate more often, 
 \SetAlgoLined
 \SetKwFunction{FSingle}{SeekSingle}
 \Fn{\FSingle{seeker priorities, owner priorities, owner slates, seeker indicators}}{
- Find a job for a seeker $c$ only if they are not slated for a job \;
+ Find a job for a seeker $c \in A_{c_e}$ only if they are not slated for a job \;
  \If{$J_c == 0$}{
  Iterate down the list of seeker $c$'s preferences \;
  \For{$p \in \{1, \dots, n\}$}{
@@ -60,12 +64,15 @@ Suppose the goal of a system owner is to allow couples to co-locate more often, 
    \ElseIf{$P^{O}_{j,c} < P^{O}_{j,w} $ such that $P^{O}_{j,w} = \max \{P^{O}_{j,v} | S_v \in O_j\}$}{
    Remove the seeker $w$ (least preferred) from the slate of owner of job $j$ \;
    $O_j -= S_w$\;
-   Indicate that seeker $w$ tentatively does not have a job \;
+   Indicate that seeker $w$ tentatively does not have a job as an individual\;
    $J_w = 0$\;
+   Indicate that their entity does not have a job, thus if submitted as a couple even if the other member has a job they must move onto their next preference \;
+   $I_{w_e} = 0$ such that $w \in A_{w_e}$\;
    Add the seeker $c$ to the slate of owner of job $j$ \;
    $O_j += S_c$\;
    Indicate that seeker $c$ tentatively has job $j$ \;
-   $J_c = j$
+   $J_c = j$\;
+   $I_{c_e} = 1$\;
    }
    }
 }
@@ -81,7 +88,7 @@ Suppose the goal of a system owner is to allow couples to co-locate more often, 
 \SetKwFunction{FCouple}{SeekCouple}
 \Fn{\FCouple{seeker priorities, owner priorities, owner slates, seeker indicators}}{
  Find a job for the seeking couple $c$ if either of them are not slated for a job \;
- \If{$J_c == 0$}{
+ \If{$I_{c_e} == 0$}{
  Iterate down the list of seeker $c$'s preferences \;
  \For{$p \in \{1, \dots, n\}$}{
  $j = r$ such that $P^S_{r,c} = p$ \;
