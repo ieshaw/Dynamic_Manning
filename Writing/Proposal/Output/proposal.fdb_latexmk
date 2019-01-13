@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1547352264 "/Users/ianshaw/Downloads/Spectre_Code/Dynamic_Manning/Writing/Proposal/proposal.tex" "/Users/ianshaw/Downloads/Spectre_Code/Dynamic_Manning/Writing/Proposal/Output/proposal.pdf" "proposal" 1547352280
-  "/Users/ianshaw/Downloads/Spectre_Code/Dynamic_Manning/Writing/Proposal/Output/proposal.aux" 1547352264 1626 a9c0b9b0b97b587a1a569fb2aa06cd6a ""
-  "/Users/ianshaw/Downloads/Spectre_Code/Dynamic_Manning/Writing/Proposal/proposal.tex" 1547352264 8890 f1363b158fcb8c13692546e7acd58fec ""
+["pdflatex"] 1547353087 "/Users/ianshaw/Downloads/Spectre_Code/Dynamic_Manning/Writing/Proposal/proposal.tex" "/Users/ianshaw/Downloads/Spectre_Code/Dynamic_Manning/Writing/Proposal/Output/proposal.pdf" "proposal" 1547354857
+  "/Users/ianshaw/Downloads/Spectre_Code/Dynamic_Manning/Writing/Proposal/Output/proposal.aux" 1547353088 1626 a9c0b9b0b97b587a1a569fb2aa06cd6a ""
+  "/Users/ianshaw/Downloads/Spectre_Code/Dynamic_Manning/Writing/Proposal/proposal.tex" 1547353087 8953 9b73bf32421c7b53950324bc91649564 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2016/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1136768653 960 379cc0019370a9e0208a0a3f949f847a ""
@@ -104,13 +104,13 @@
   "/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1476406489 1888048 f2c5faed5981a516f406b2ccc20bff71 ""
   "/usr/local/texlive/2016/texmf-var/web2c/pdftex/pdflatex.fmt" 1463979169 3873397 413fbfbbedb8e719ddc392043a7add02 ""
   "/usr/local/texlive/2016/texmf.cnf" 1463979140 577 2938757e76f31531e65cc647e3507693 ""
-  "Output/proposal.aux" 1547352264 1626 a9c0b9b0b97b587a1a569fb2aa06cd6a ""
-  "Output/proposal.out" 1547352264 533 dd74f8e4ccaa1a17a30e3752708b7bbb ""
-  "proposal.tex" 1547352264 8890 f1363b158fcb8c13692546e7acd58fec ""
+  "Output/proposal.aux" 1547353088 1626 a9c0b9b0b97b587a1a569fb2aa06cd6a ""
+  "Output/proposal.out" 1547353088 533 dd74f8e4ccaa1a17a30e3752708b7bbb ""
+  "proposal.tex" 1547353087 8953 9b73bf32421c7b53950324bc91649564 ""
   (generated)
   "Output/proposal.aux"
   "Output/proposal.out"
-  "/Users/ianshaw/Downloads/Spectre_Code/Dynamic_Manning/Writing/Proposal/Output/proposal.log"
   "Output/proposal.pdf"
   "/Users/ianshaw/Downloads/Spectre_Code/Dynamic_Manning/Writing/Proposal/Output/proposal.pdf"
+  "/Users/ianshaw/Downloads/Spectre_Code/Dynamic_Manning/Writing/Proposal/Output/proposal.log"
   "Output/proposal.log"
