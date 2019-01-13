@@ -7,7 +7,7 @@
 \BOOKMARK [1][-]{section.3}{Similarity Measure}{}% 7
 \BOOKMARK [2][-]{subsection.3.1}{Math}{section.3}% 8
 \BOOKMARK [2][-]{subsection.3.2}{Possible Alteration}{section.3}% 9
-\BOOKMARK [2][-]{subsection.3.3}{Explanation}{section.3}% 10
-\BOOKMARK [3][-]{subsubsection.3.3.1}{Implementation}{subsection.3.3}% 11
-\BOOKMARK [3][-]{subsubsection.3.3.2}{Use Cases of Similarity Score}{subsection.3.3}% 12
-\BOOKMARK [2][-]{subsection.3.4}{Future State}{section.3}% 13
+\BOOKMARK [1][-]{section.4}{Explanation}{}% 10
+\BOOKMARK [2][-]{subsection.4.1}{Implementation}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.2}{Use Cases of Similarity Score}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.3}{Future State}{section.4}% 13
