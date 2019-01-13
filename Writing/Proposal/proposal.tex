@@ -1,0 +1,181 @@
+\documentclass{article}
+\usepackage{graphicx,fancyhdr,amsmath,amssymb,amsthm,subfig,url,hyperref}
+\usepackage[margin=1in]{geometry}
+\usepackage{comment}
+\usepackage{framed} 
+\usepackage{indentfirst}
+
+\usepackage{bbm}
+\usepackage{algorithmic}
+\usepackage[ruled,vlined]{algorithm2e}
+%\usepackage{algorithm}
+\usepackage{courier}
+
+%%%%%%
+\SetKwProg{Fn}{Function}{}{}
+%%%%%%
+%----------------------- Macros and Definitions --------------------------
+
+%%% FILL THIS OUT
+\newcommand{\studentname}{Ian Shaw}
+\newcommand{\suid}{ieshaw}
+\newcommand{\exerciseset}{Class Notes}
+%%% END
+
+%\renewcommand{\theenumi}{\bf \Alph{enumi}}
+
+%\theoremstyle{plain}
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{lemma}[theorem]{Lemma}
+
+\fancypagestyle{plain}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LO,RE]{\sffamily\bfseries\large Dynamic Manning Project}
+\fancyfoot[LO,RE]{\sffamily\bfseries\large ianedwardshaw (at) gmail.com}
+\fancyfoot[RO,LE]{\sffamily\bfseries\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+
+\graphicspath{{figures/}}
+
+%-------------------------------- Title ----------------------------------
+
+\title{The Mathematics of a Detailing Marketplace}
+\author{\studentname \qquad LTJG, USN}
+
+%--------------------------------- Text ----------------------------------
+
+\begin{document}
+\maketitle
+
+\section{Matching Algorithm}
+
+The intent of this algorithm is to provide stable pairings between job owners and job seekers based on their ranked preferences. The algorithm's initial conception and definition of stability can be found in Gale and Shapely's 1962 publication in the January \textit{The American Mathematical Monthly} \footnote{\url{http://www.u.arizona.edu/~mwalker/501BReadings/Gale&Shapley_AMM1962.pdf}}. Interestingly, this research was funded by the Office of Naval Research. In short, a stable system is one where every job owner and job seeker are paired with the best possible preference for each; in other words no two job seekers or job owners can switch their assignments to both their benefits. Interestingly, depending on how to construct this algorithm, the result could be focused on bettering the job seeker or job owner, we choose here to provide optimality for the job seeker. A given situation could be optimal to both, but there could also be multiple stable distributions of pairings; these could vary between overall better for the seeker or the owner. Also important to note, since a job owner can have multiple positions (say 4 ensigns for a ship CO), a job owner can have multiple seekers pairs, but no seeker can have multiple owners.
+
+This is the same algorithm that won the Nobel Prize in 2012 for its application in the National Residency Match Program. In their case, the algorithm is constructed to provide optimality for the applicant rather than the hospital program.
+
+\subsection{Algorithm}
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwResult{There is no pairs $(O_i, S_i), (O_j, S_j)$ such that the pairings $(O_i, S_j), (O_j, S_i)$ would be preferred by all parties.} 
+ Consider a set of preferences $\{P^{x}_{y,z} \in \mathbb{Z}^+: x \in \{O,S\}, y \in \{1, \dots, n\}, z \in \{1, \dots, m\}\}$. This indicates the positive integer preference ranking of either the job owner or seeker ($O$ or $S$) for the $n$ available jobs and $m$ seekers. Also know that $l_n$ is the number of available positions in each job.\;
+ \For{$c \in \{1, \dots, n\}$}{
+ For each job, initialize the job owner's hiring slate to be empty \;
+ $O_c = \{\null\}$ \;
+ } 
+ \For{$c \in \{1, \dots, m\}$}{
+ For each job seeker initialize their indicator to say \textit{un-slated} \;
+ $I_c = 0$ \;
+ Also initialize to look at the first preference of each job seeker \;
+ $g_c = 1$\;
+ } 
+ Check if there are more jobs than seekers, or more seekers than jobs \;
+ $a = \max \big(0, m - \sum_{c = 1}^n l_c \big)$\;
+ Seek jobs until either all seekers are hired or all jobs are spoken for \;
+ \While{\big( $\sum_{c = 1}^m I_c \leq a $ \big)}{
+ Iterate through all the job seekers \;
+ \For{$c \in \{1, \dots, m\}$}{
+ Find a job for a seeker $c$ only if they are not slated for a job \;
+ \If{$I_c == 0$}{
+ Look for the job that is seeker $c$'s $g^{th}$ preference \;
+ $j = r$ such that $P^S_{r,c} = g_c$ \;
+ If job $j$ has open positions \;
+  \uIf{$|O_j| < l_j$}{
+   Add the seeker $c$ to the slate of owner of job $j$ \;
+   $O_j += S_c$\;
+   Indicate that seeker $c$ tentatively has a job \;
+   $I_c = 1$\;
+   }
+   Or if seeker $c$ preferred by job owner $j$ than their least preferred person currently on their slate \;
+   \ElseIf{$P^{O}_{j,c} < P^{O}_{j,w} $ such that $P^{O}_{j,w} = \max \{P^{O}_{j,v} | S_v \in O_j\}$}{
+   Remove the seeker $w$ (least preferred) from the slate of owner of job $j$ \;
+   $O_j -= S_w$\;
+   Indicate that seeker $w$ tentatively does not have a job \;
+   $I_c = 1$\;
+   Add the seeker $c$ to the slate of owner of job $j$ \;
+   $O_j += S_c$\;
+   Indicate that seeker $c$ tentatively has a job \;
+   $I_c = 1$\;
+   }
+ Indicate that the $g^{th}+1$ preference of seeker $c$ has been considered \; 
+ $g_c++$\;
+ } 
+ }
+ }
+ \caption{Deferred Acceptance}
+\end{algorithm}
+
+\section{Similarity Measure}
+
+\subsection{Math}
+
+Consider the following definitions.
+
+\begin{align}
+\vec{w} &= \text{ weight vector, } \in \mathbb{R}^{q \times 1} \\
+1 &= \sum_{k=0}^{q} \vec{w}_k\\
+Q &= \text{ Quality Matrix, } \in \mathbb{R}^{q \times n} \\
+0 & \leq Q \leq 1 \\
+S &= \text{ Similarity Matrix, } \in \mathbb{R}^{n \times n} \\
+0 & \leq S \leq 1 \\
+q + 1 &= \text{number of qualities encoded}\\
+m &= \text{number of persons}\\
+\end{align}
+
+The element-wise the similarity score between Person $i$ and Person $j$ is
+\[S_{ij} = 1- (Q_i - Q_j)^2\bullet \vec{w} =  1 - \frac{1}{q}\sum_{k=0}^{q} (Q_{k,i} - Q_{k,j})^2\vec{w}_k\]
+In words:
+\begin{quote}
+\textit{The similarity of two people is the square distance of their encoded quality vector, weighted by the importance of similarity for each quality.}
+\end{quote}
+
+\subsection{Possible Alteration}
+
+Suppose a quality $q$ is considered to be more valuable as it increases (for example, competency in some skill), without any negative consequences. In order to not negatively impact a person for being different but better in a quantitative way (but still different), the definition of similarity would need to be altered to be non-equal ($S_{ij} \neq S_{ji}$), but could take the following formulation.
+
+\[S_{ij} = 1- \max(Q_i - Q_j, 0) \bullet \vec{w} =  1 - \frac{1}{q}\sum_{k=0}^{q} \max(Q_k,i - Q_k,j, 0)\vec{w}_k\]
+
+In the case that Person $i$ is better than or equal to Person $j$ in some metric, yet absolutely greater in at least one quality
+
+\[S_{ij} > S_{ji}\]
+
+\section{Explanation}
+
+For a given pair of people, Person $i$ and Person $j$, their similarity score $S_{ij}$, is a number between 0 and 1. With 0 being completely dissimilar, 1 being completely identical in terms of the encoded qualities. 
+
+The Matrix $Q$ is the quality matrix. The entry $Q_{ki}$ is a number between 0 and 1 indicating the strength of quality $k$ for Person $i$.
+
+The vector $\vec{w}$ is the weight vector. The entry $\vec{w}_k$ is a number between 0 and 1 indicating the importance of the quality $k$ to determine the value of a person for the position in question.
+
+
+\subsection{Implementation}
+
+\begin{enumerate}
+\item Hiring official determines the qualities important for their position (past jobs, competence in certain skills, etc.). These are the qualities 1 through $q$.
+\item Hiring official determines the importance of each quality to the position on a scale of $1$ (absolutely necessary) to $0$ (irrelevant). These values form the vector $\vec{w}$.
+\item Position seekers (the $n$ individuals) or some authority generate the quantitative measure for each quality $q$, these populate the matrix $Q$. These could be 1/0 for yes/no (ex: have or have not attended a certain training), or some continuous scale (ex: 0.7 for 70\% qualified in a particular skill). This can be done by asking the position seekers, referencing their official records, or administering some sort of evaluation.
+\item Evaluate Similarity scores across the set of people.
+\item Leverage similarity score information.
+\end{enumerate}
+
+\subsection{Use Cases of Similarity Score}
+
+\begin{enumerate}
+\item If hiring official wants a new employee most similar to a previous one, choose a position seeker with the highest similarity score.
+\item If a hiring official wants a diverse group, can create an optimization function with the minimal similarity across the team.
+\end{enumerate}
+
+
+\subsection{Future State}
+
+After enough records and performance metrics developed, can instead use records as data and performance metrics as labels to develop a machine learning algorithm to predict people's performance in a specific job. This could be used in concert with, or replace the need for a similarity score.
+
+\end{document}
+
+
+
+
+
+
