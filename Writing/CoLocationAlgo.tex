@@ -49,9 +49,9 @@ Suppose the goal of a system owner is to allow couples to co-locate more often, 
 \SetKwFunction{FSingle}{SeekSingle}
 \Fn{\FSingle{seeker priorities, owner priorities, owner slates, seeker indicators}}{
  Find a job for a seeker $c \in A_{c_e}$ only if they are not slated for a job \;
- \If{$J_c == 0$}{
- Iterate down the list of seeker $c$'s preferences \;
- \For{$p \in \{1, \dots, n\}$}{
+ Iterate down the list of seeker $c$'s preferences until they are places in a job \;
+ Initialize $p = 1$\;
+ \While{$I_{c_e} == 0$}{
  $j = r$ such that $P^S_{r,c} = p$ \;
  If job $j$ has open positions \;
   \uIf{$|O_j| < l_j$}{
@@ -60,7 +60,7 @@ Suppose the goal of a system owner is to allow couples to co-locate more often, 
    Indicate that seeker $c$ tentatively has job $j$ \;
    $J_c = j$\;
    }
-   Or if seeker $c$ preferred by job owner $j$ than their least preferred person currently on their slate \;
+   Or if seeker $c$ is preferred by job owner $j$ over their least preferred person currently on their slate \;
    \ElseIf{$P^{O}_{j,c} < P^{O}_{j,w} $ such that $P^{O}_{j,w} = \max \{P^{O}_{j,v} | S_v \in O_j\}$}{
    Remove the seeker $w$ (least preferred) from the slate of owner of job $j$ \;
    $O_j -= S_w$\;
@@ -76,7 +76,6 @@ Suppose the goal of a system owner is to allow couples to co-locate more often, 
    }
    }
 }
-}
  \caption{Seeking Function for Singles}
 \end{algorithm}
 
@@ -85,33 +84,51 @@ Suppose the goal of a system owner is to allow couples to co-locate more often, 
 
 \begin{algorithm}[H]
 \SetAlgoLined
+\SetKwFunction{FCheckPri}{CheckPriority}
+\Fn{\FCheckPri{seeker, job}}{
+If job $j$ has open positions Or if seeker $c$ preferred by job owner $j$ than their least preferred person currently on their slate \;
+\uIf{$|O_j| < l_j$ or $P^{O}_{j,c} < P^{O}_{j,w} $ such that $P^{O}_{j,w} = \max \{P^{O}_{j,v} | S_v \in O_j\}$}{
+  \KwRet{1}\;
+   }{
+   \KwRet{0}\;
+   }
+   }
 \SetKwFunction{FCouple}{SeekCouple}
 \Fn{\FCouple{seeker priorities, owner priorities, owner slates, seeker indicators}}{
- Find a job for the seeking couple $c$ if either of them are not slated for a job \;
- \If{$I_{c_e} == 0$}{
- Iterate down the list of seeker $c$'s preferences \;
- \For{$p \in \{1, \dots, n\}$}{
- $j = r$ such that $P^S_{r,c} = p$ \;
- If job $j$ has open positions \;
+ Find a job for the seeking couple $c_e = (c_1, c_2)$ if either of them are not slated for a job \;
+While both members of the seeking entity do not have a job, iterate down the list of preferences of seeker entity $c_e$ the $c_e$'s \;
+ Initialize $p = 1$\;
+ \While{$I_{c_e} == 0$}{
+ $j_1 = r$ such that $P^S_{r,c_1} = p$ \;
+ $j_2 = r$ such that $P^S_{r,c_2} = p$ \;
+ Check if this set of jobs could go to the couple \;
+ \uIf{\FCheckPri{$c_1,j_1$} and \FCheckPri{$c_2,j_2$}}{
+  Flag that they are tentatively assigned positions \;
+  $I_{c_e} = 1$ \;
+  Assign the positions\;
+  \For{$(c,j) \in ((c_1, j_1),(c_2,j_2))$}{
   \uIf{$|O_j| < l_j$}{
    Add the seeker $c$ to the slate of owner of job $j$ \;
    $O_j += S_c$\;
    Indicate that seeker $c$ tentatively has job $j$ \;
    $J_c = j$\;
    }
-   Or if seeker $c$ preferred by job owner $j$ than their least preferred person currently on their slate \;
+   Or if seeker $c$ is preferred by job owner $j$ over their least preferred person currently on their slate \;
    \ElseIf{$P^{O}_{j,c} < P^{O}_{j,w} $ such that $P^{O}_{j,w} = \max \{P^{O}_{j,v} | S_v \in O_j\}$}{
    Remove the seeker $w$ (least preferred) from the slate of owner of job $j$ \;
    $O_j -= S_w$\;
-   Indicate that seeker $w$ tentatively does not have a job \;
+   Indicate that seeker $w$ tentatively does not have a job as an individual\;
    $J_w = 0$\;
+   Indicate that their entity does not have a job, thus if submitted as a couple even if the other member has a job they must move onto their next preference \;
+   $I_{w_e} = 0$ such that $w \in A_{w_e}$\;
    Add the seeker $c$ to the slate of owner of job $j$ \;
    $O_j += S_c$\;
    Indicate that seeker $c$ tentatively has job $j$ \;
-   $J_c = j$
+   $J_c = j$\;
+   }
    }
    }
 }
 }
- \caption{Seeking Function for Singles}
+ \caption{Seeking Function for Couples}
 \end{algorithm}
