@@ -1,5 +1,7 @@
 # System Specific
 .DS_Store
+dm/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
