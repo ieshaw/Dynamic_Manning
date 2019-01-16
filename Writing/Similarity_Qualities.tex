@@ -1,6 +1,4 @@
-\section{Similarity Measure}
-
-\subsection{Math}
+\subsection{Similarity Using Quality Encodings}
 
 Consider the following definitions.
 
@@ -22,7 +20,7 @@ In words:
 \textit{The similarity of two people is the square distance of their encoded quality vector, weighted by the importance of similarity for each quality.}
 \end{quote}
 
-\subsection{Possible Alteration}
+\subsubsection{Possible Alteration}
 
 Suppose a quality $q$ is considered to be more valuable as it increases (for example, competency in some skill), without any negative consequences. In order to not negatively impact a person for being different but better in a quantitative way (but still different), the definition of similarity would need to be altered to be non-equal ($S_{ij} \neq S_{ji}$), but could take the following formulation.
 
@@ -32,7 +30,7 @@ In the case that Person $i$ is better than or equal to Person $j$ in some metric
 
 \[S_{ij} > S_{ji}\]
 
-\subsection{Explanation}
+\subsubsection{Explanation}
 
 For a given pair of people, Person $i$ and Person $j$, their similarity score $S_{ij}$, is a number between 0 and 1. With 0 being completely dissimilar, 1 being completely identical in terms of the encoded qualities. 
 
@@ -57,8 +55,3 @@ The vector $\vec{w}$ is the weight vector. The entry $\vec{w}_k$ is a number bet
 \item If hiring official wants a new employee most similar to a previous one, choose a position seeker with the highest similarity score.
 \item If a hiring official wants a diverse group, can create an optimization function with the minimal similarity across the team.
 \end{enumerate}
-
-
-\subsection{Future State}
-
-After enough records and performance metrics developed, can instead use records as data and performance metrics as labels to develop a machine learning algorithm to predict people's performance in a specific job. This could be used in concert with, or replace the need for a similarity score.

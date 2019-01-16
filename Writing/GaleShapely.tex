@@ -1,5 +1,9 @@
 \subsection{Gale-Shapely Algorithm}
 
+The intent of this algorithm is to provide stable pairings between job owners and job seekers based on their ranked preferences. The algorithm's initial conception and definition of stability can be found in Gale and Shapely's 1962 publication in the January \textit{The American Mathematical Monthly} \cite{gale_shapely}. Interestingly, this research was funded by the Office of Naval Research. In short, a stable system is one where every job owner and job seeker are paired with the best possible preference for each; in other words no two job seekers or job owners can switch their assignments to both their benefits. Depending on how to construct this algorithm, the result could be focused on giving preference to the job seeker or to the job owner; we choose here to provide optimality for the job seeker. A given situation could be optimal to both, but by nature of needing an initiating agent we give that to the seeker. Also important to note, since a job owner can have multiple positions (e.g. four ensigns allotted for a ship's CO), that job owner can be matched with multiple seekers, but no seeker can have multiple owners.
+
+This is the same algorithm that won the Nobel Prize in 2012 for its application in the National Residency Match Program. In their case, the algorithm is constructed to provide optimality for the applicant rather than the hospital program. They surmised that providing the best position for the seeker improved organizational performance.
+
 \begin{algorithm}[H]
 \SetAlgoLined
 \KwResult{There are no pairs $(O_i, S_i), (O_j, S_j)$ such that the pairings $(O_i, S_j), (O_j, S_i)$ would be preferred by all parties.} 
