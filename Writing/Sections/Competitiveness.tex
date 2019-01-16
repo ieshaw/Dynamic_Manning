@@ -1,11 +1,25 @@
 \subsection{Competitiveness}
 
-The competitiveness of a billet can be considered a combination of the average ranking by other seekers, and the number of seekers who have placed a ranking. 
+\subsubsection{Average Ranking}
 
 The competitiveness score for any given job could be defined as the average preference ranking of the job across all seekers.
 
-Consider a set of preferences $\{P^{x}_{y,z} \in \mathbb{Z}^+: x \in \{O,S\}, y \in \{1, \dots, n\}, z \in \{1, \dots, m\}\}$. This indicates the positive integer preference ranking of either the job owner or seeker ($O$ or $S$) for the $n$ available jobs and $m$ seekers. 
+Consider a set of preferences $\{P^{S}_{y,z} \in \mathbb{Z}^+: y \in \{1, \dots, n\}, z \in \{1, \dots, m\}\}$. This indicates the positive integer preference ranking of the job seeker for the $n$ available jobs and $m$ seekers. 
 
 Thus the competitiveness score $C$ for a given job $j$ could be defined as 
 
-\[C_j = \frac{1}{m}\sum_{y=1}^m P^{x}_{y,j}\]
+\[\texttt{Competitiveness}_j = \frac{1}{n} \sum_{i=1}^m P^S_{i,j}\]
+
+\subsubsection{Adapted Sciorintino Ratio}
+
+An average of preference rankings, though conveying the desirability of a position, loses mcuh of the information contained in the distribution of preferences. For example, a position ranked first by ten individuals and hundredth by a twenty individuals has the same average ranking as a job ranked seventh by all thirty individuals; yet the prior is much more competitive. 
+
+The Sciorintino Ratio is a metric from the finance industry used to measure the performance of a investment vehicle based on the distribution of their returns. An investment vehicle with consistent, small positive returns is much different than one with consistent negative returns and one big win, even though the average return may be the same. We see the same problem in finance as the detailing marketplace, conveying the nature of a distribution in a single metric. The difference in this ratio as compared to the more popular Sharpe Ratio, is that the Sciorintino ratio does not let positive volatility negatively effect the score, only volatility on the negative side is punishing. Here we want to adapt the the concept that the volatility of preference is reflected only with higher ranked preferences. For example, if a job has an average ranking of ten, the fact that many people ranked it second is much more important for competitiveness than the fact that many other people ranked it thirtieth.
+
+The formulation for our Adapted Sciorintino Ratio for the competitiveness of job $j$ takes the form
+
+\begin{align}
+\mu_j &= \frac{1}{n} \sum_{i=1}^m P^S_{i,j} \\
+\sigma_j &= \frac{1}{m^2} \mathbbm{1}\big( P^S_{i,j} < \mu \big) \big(P^S_{i,j} - \mu \big)^2
+\texttt{Competitiveness}_j &= \frac{\mu_j}{\sigma_j}
+\end{align}

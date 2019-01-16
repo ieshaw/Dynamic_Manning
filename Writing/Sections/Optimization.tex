@@ -42,7 +42,7 @@ The Goodness Function $f$ is the strategic objective function of the assignment 
 
 Co-location Function $C$ returns $1$ if the couple is considered co-located, 0 if not or if single. Here we choose 50 miles between job locations to be consider co-located as that is the threshold for receiving dislocation allowance (DLA) for a permanent change of station (PCS) according to the Joint Travel Regulations (JTR). The location function $L(S_i)$ returns the lat/long location of the stationing for Seeker $i$. 
 
-\[D = \mathbbm{1}\big( || L(S_i) - L(S_j) \leq 50 \big)\]
+\[D = \mathbbm{1}\big( || L(S_i) - L(S_j) || \leq 50 \big)\]
 
 
 The inspiration and initial formulation of this optimization was done by a young Air Force officer who has since moved onto the private sector. 
