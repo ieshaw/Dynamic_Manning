@@ -1,8 +1,0 @@
-PWD /Users/ianshaw/Downloads/Spectre_Code/Dynamic_Manning/Writing
-INPUT /usr/local/texlive/2016/texmf.cnf
-INPUT /usr/local/texlive/2016/texmf-dist/web2c/texmf.cnf
-INPUT /usr/local/texlive/2016/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/ianshaw/Downloads/Spectre_Code/Dynamic_Manning/Writing/CoLocationAlgo.tex
-OUTPUT /Users/ianshaw/Downloads/Spectre_Code/Dynamic_Manning/Writing/Output/CoLocationAlgo.log
-INPUT /usr/local/texlive/2016/texmf-dist/fonts/map/fontname/texfonts.map
-INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/public/cm/cmti10.tfm
