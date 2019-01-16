@@ -2,10 +2,10 @@ This is BibTeX, Version 0.99d (TeX Live 2016)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: Output/Report.aux
 The style file: plain.bst
-Database file #1: DM.bib
+Database file #1: Sections/DM.bib
 You've used 1 entry,
             2118 wiz_defined-function locations,
-            504 strings with 4129 characters,
+            504 strings with 4138 characters,
 and the built_in function-call counts, 313 in all, are:
 = -- 29
 > -- 13
