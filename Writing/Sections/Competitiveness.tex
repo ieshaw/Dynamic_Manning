@@ -20,6 +20,6 @@ The formulation for our Adapted Sciorintino Ratio for the competitiveness of job
 
 \begin{align}
 \mu_j &= \frac{1}{n} \sum_{i=1}^m P^S_{i,j} \\
-\sigma_j &= \frac{1}{m^2} \mathbbm{1}\big( P^S_{i,j} < \mu \big) \big(P^S_{i,j} - \mu \big)^2 \\
+\sigma_j &= \frac{1}{m^2} \sum_{i=1}^m \mathbbm{1}\big( P^S_{i,j} < \mu \big) \big(P^S_{i,j} - \mu \big)^2 \\
 \texttt{Competitiveness}_j &= \frac{\mu_j}{\sigma_j}
 \end{align}
