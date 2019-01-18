@@ -2,38 +2,14 @@
 
 Alternate to deterministic algorithms is a linear programming (optimization) approach. This allows system owners to input strategic objectives in the seeker-owner job matching process. The importance of job seeker preference can be weighted to be more important than owner, or vice versa. Requirements can also be added, as you will see in the formulation below.
 
-Consider these terms:
-
-\begin{align}
-m &= \text{number of different jobs available}\\
-n &= \text{number of persons}\\
-n_c &= \text{number of couples requesting co-location}\\
-c_i &= \begin{cases}
-r & \text{ Seeker $i$ requests co-location with Seeker $r$} \\
-0 & \text{ Seeker $i$ does not request co-location}
-\end{cases} \\
-\vec{P^S_i} &= \text{Preference vector of job seeker $i$, } \in \mathbb{Z}^{+, m \times 1} \\
-P^S &= [\vec{P^S_i} | \dots | \vec{P^S_n}] \in \mathbb{Z}^{+, m \times n}, \\ 
-&\text{\indent Preference Matrix of Seekers} \\
-\vec{P^O_i} &= \text{Preference vector of job owner $j$, } \in \mathbb{Z}^{+, n \times 1} \\
-P^O &= [\vec{P^O_i} | \dots | \vec{P^O_n}] \in \mathbb{Z}^{+, n \times m}, \\ 
-&\text{\indent Preference Matrix of Seekers} \\
-\vec{a_j} &= \text{Amount of positions for job $j$, } \in \mathbb{Z}^{+} \\
-X &= \text{Placement Matrix} \in \{0,1\}^{+, n \times m} \\
-x_{i,j} &= \begin{cases}
-1 & \text{if $S_i$ is slated for job $j$}\\
-0 & \text{otherwise}
-\end{cases}
-\end{align}
-
-The optimization function takes the form below:
+The optimization function takes the form:
 
 \begin{align}
 \min \qquad & \sum_{i,j = 1}^{i=n, j=m}f(x_{i,j}) \\
 \text{ such that } \qquad & \sum_{j=1}^m x_{i,j} \leq 1  \forall i \in \{1, \dots n\} \quad \texttt{only one job per person} \\
 & \sum_{i=1}^n x_{i,j} \leq a_j  \forall j \in \{1, \dots m\} \quad \texttt{all jobs are at or below capacity} \\
 & x_{i,j} \in \{i,j\} \\
-& \frac{1}{2n_c} \sum_{i=1}^n C(S_i) \geq 0.95 \quad \texttt{at least 95\% of couples are co-located}
+& \frac{1}{2n_c} \sum_{i=1}^n C(S_i, p_i) \geq 0.95 \quad \texttt{at least 95\% of couples are co-located}
 \end{align}
 
 The Goodness Function $f$ is the strategic objective function of the assignment process. For the sake of this paper, we set it to value the preference of the seeker twice as much as the preference of th job owner.
@@ -42,7 +18,7 @@ The Goodness Function $f$ is the strategic objective function of the assignment 
 
 Co-location Function $C$ returns $1$ if the couple is considered co-located, 0 if not or if single. Here we choose 50 miles between job locations to be consider co-located as that is the threshold for receiving dislocation allowance (DLA) for a permanent change of station (PCS) according to the Joint Travel Regulations (JTR). The location function $L(S_i)$ returns the lat/long location of the stationing for Seeker $i$. 
 
-\[D = \mathbbm{1}\big( || L(S_i) - L(S_j) || \leq 50 \big)\]
+\[C(S_i, p_i = S_j) = \mathbbm{1}\big( || L(S_i) - L(S_j) || \leq 50 \big)\]
 
 
 The inspiration and initial formulation of this optimization was done by a young Air Force officer who has since moved onto the private sector. 

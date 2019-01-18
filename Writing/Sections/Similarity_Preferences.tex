@@ -1,16 +1,8 @@
 \subsection{Similarity}
 
-Consider our terms:
-
-\begin{align}
-m &= \text{number of different jobs available}\\
-n &= \text{number of persons}\\
-\vec{S_i} &= \text{Preference vector of job seeker $i$, } \in \mathbb{Z}^{+, m \times 1} \\
-\end{align}
-
 To understand the multi-dimensional similarity of two vectors, the natural choice is the squared Euclidean distance between the two vectors. 
 
-\[\sqrt{ \sum_{k=1}^{m} (S_{i,k} - S_{j,k})^2}\]
+\[\sum_{k=1}^{m} (S_{i,k} - S_{j,k})^2\]
 
 Yet, a job seeker's first preference are much more important to them than their hundredth preference, indicating that the similarity of top preferences of two job seekers is indicative of their overall similarity than the comparison of their much lower ranked preference.  Thus we want a weight on the distance according to the average importance of the metric to the two seekers.
 

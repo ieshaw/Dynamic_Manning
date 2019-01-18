@@ -13,7 +13,7 @@ def sim_prefs(decider, slate):
     slate_ranking = list(range(1,len(slate) + 1))
     pref_dict = {}
     for i in decider:
-        pref_dict[i] = random.sample(slate, slate_n) 
+        pref_dict[i] = random.sample(slate_ranking, slate_n) 
     return  pd.DataFrame(data = pref_dict, index=slate, columns=decider)
 
 def main():

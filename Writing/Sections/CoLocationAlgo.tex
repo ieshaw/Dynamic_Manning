@@ -5,7 +5,6 @@ Suppose the goal of a system owner is to allow couples to co-locate more often, 
 \begin{algorithm}[H]
 \SetAlgoLined
 \KwResult{There are no pairs $(O_i, S_i), (O_j, S_j)$ such that the pairings $(O_i, S_j), (O_j, S_i)$ would be preferred by all parties.} 
- Consider a set of preferences $\{P^{x}_{y,z} \in \mathbb{Z}^+: x \in \{O,S\}, y \in \{1, \dots, n\}, z \in \{1, \dots, m\}\}$ and some of the pairs are submitted together $\{(P^{x}_{y_1,z}, P^{x}_{y_2,z}) \in \mathbb{Z}^+: x \in \{O,S\}, y_1,y_2 \in \{1, \dots, n\}, z \in \{1, \dots, m\}\}$, and indicate pairing by $p_y = 0$ if submitted as a single or $p_{y_1}=y_2, p_{y_2}=p_{y_1}$ if as a couple. To encapsulate the idea of seeking entities consider $\{A_q : q \in \{1, \dots, m_e\}\}$, where each entity $A_i$ can either be a single seeker $(A_i = y)$ or a pair, $(A_i = (y_1, y_2)$. This indicates the positive integer preference ranking of either the job owner or seeker ($O$ or $S$) for the $n$ available jobs and $m$ seekers. Also know that $l_n$ is the number of available positions in each job.\;
  \For{$c \in \{1, \dots, n\}$}{
  For each job, initialize the job owner's hiring slate to be empty \;
  $O_c = \{\null\}$ \;
