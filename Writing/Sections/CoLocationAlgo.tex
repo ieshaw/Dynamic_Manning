@@ -1,33 +1,33 @@
 \subsection{Co-Location Algorithm: Adopting Gale-Shapely}
 
-Suppose the goal of a system owner is to allow couples to co-locate more often, as was another intention of the National Residency Math Program. This can be achieved by allowing couples to submit preferences as pairs. In this scenario, a position is only given if the position improves the combined preference of the couple.
+Suppose the goal of a system owner is to allow couples to co-locate more often, as was another intention of the National Residency Math Program. This can be achieved by allowing couples to submit preferences as pairs. A couple is considered co-located if they both receive a position in a submitted pair. In this scenario, a position is only given if the position improves the combined preference of the couple.
 
 \begin{algorithm}[H]
 \SetAlgoLined
 \KwResult{There are no pairs $(O_i, S_i), (O_j, S_j)$ such that the pairings $(O_i, S_j), (O_j, S_i)$ would be preferred by all parties.} 
  \For{$c \in \{1, \dots, n\}$}{
- For each job, initialize the job owner's hiring slate to be empty \;
+ \texttt{For each job, initialize the job owner's hiring slate to be empty} \;
  $O_c = \{\null\}$ \;
  } 
  \For{$c \in \{1, \dots, m\}$}{
- For each job seeker initialize their job to be \textit{un-slated} \;
+ \texttt{For each job seeker initialize their job to be} \textit{un-slated} \;
  $J_c = 0$ \;
  } 
- Find the number of job seekers who submitted preferences as singles \;
+ \texttt{Find the number of job seekers who submitted preferences as singles} \;
  $m_s =  \sum_{c=1}^m \mathbbm{1}(p_c == 0)$ \;
- Find the number of job seeking entities, in this case a couple counts as one entity. \;
+ \texttt{Find the number of job seeking entities, in this case a couple counts as one entity.} \;
  $m_e = m_s + \frac{m - m_s}{2} $ \;
  \For{$c \in \{1, \dots, m_e\}$}{
- For each job seeking entity initialize their status to be \textit{un-slated} \;
+ \texttt{For each job seeking entity initialize their status to be} \textit{un-slated} \;
  $I_c = 0$ \;
  } 
- Check if there are more jobs than seekers, or more seekers than jobs \;
+ \texttt{Check if there are more jobs than seekers, or more seekers than jobs} \;
  $a = \max \big(0, m - \sum_{c = 1}^n l_c \big)$\;
- Seek jobs until either all seekers are hired or all jobs are spoken for \;
+ \texttt{Seek jobs until either all seekers are hired or all jobs are spoken for} \;
  \While{\big( $\sum_{c = 1}^m \mathbbm{1}(J_c \neq 0) \leq a $ \big)}{
- Iterate through all the job seeking entities \;
+ \texttt{Iterate through all the job seeking entities} \;
  \For{$c_e \in \{1, \dots, m_e\}$}{
- Choose the appropriate seeking process of a single or a couple\;
+ \texttt{Choose the appropriate seeking process of a single or a couple}\;
  \lIf{single}{
   \SetKwFunction{FSingle}{SeekSingle}
  \FSingle{seeker priorities, owner priorities, owner slates, seeker indicators}
@@ -47,29 +47,30 @@ Suppose the goal of a system owner is to allow couples to co-locate more often, 
 \SetAlgoLined
 \SetKwFunction{FSingle}{SeekSingle}
 \Fn{\FSingle{seeker priorities, owner priorities, owner slates, seeker indicators}}{
- Find a job for a seeker $c \in A_{c_e}$ only if they are not slated for a job \;
- Iterate down the list of seeker $c$'s preferences until they are places in a job \;
- Initialize $p = 1$\;
+ \texttt{Find a job for a seeker $c \in A_{c_e}$ only if they are not slated for a job} \;
+ \texttt{Iterate down the list of seeker $c$'s preferences until they are places in a job} \;
+ $p = 1$\;
  \While{$I_{c_e} == 0$}{
  $j = r$ such that $P^S_{r,c} = p$ \;
- If job $j$ has open positions \;
+ \texttt{If job $j$ has open positions} \;
   \uIf{$|O_j| < l_j$}{
-   Add the seeker $c$ to the slate of owner of job $j$ \;
+   \texttt{Add the seeker $c$ to the slate of owner of job $j$} \;
    $O_j += S_c$\;
-   Indicate that seeker $c$ tentatively has job $j$ \;
+   \texttt{Indicate that seeker $c$ tentatively has job $j$} \;
    $J_c = j$\;
+   $I_{c_e} = 1$\;
    }
-   Or if seeker $c$ is preferred by job owner $j$ over their least preferred person currently on their slate \;
+   \texttt{Or if seeker $c$ is preferred by job owner $j$ over their least preferred person currently on their slate} \;
    \ElseIf{$P^{O}_{j,c} < P^{O}_{j,w} $ such that $P^{O}_{j,w} = \max \{P^{O}_{j,v} | S_v \in O_j\}$}{
-   Remove the seeker $w$ (least preferred) from the slate of owner of job $j$ \;
+   \texttt{Remove the seeker $w$ (least preferred) from the slate of owner of job $j$} \;
    $O_j -= S_w$\;
-   Indicate that seeker $w$ tentatively does not have a job as an individual\;
+   \texttt{Indicate that seeker $w$ tentatively does not have a job as an individual}\;
    $J_w = 0$\;
-   Indicate that their entity does not have a job, thus if submitted as a couple even if the other member has a job they must move onto their next preference \;
+   \texttt{Indicate that their entity does not have a job, thus if submitted as a couple even if the other member has a job they must move onto their next preference} \;
    $I_{w_e} = 0$ such that $w \in A_{w_e}$\;
-   Add the seeker $c$ to the slate of owner of job $j$ \;
+   \texttt{Add the seeker $c$ to the slate of owner of job $j$} \;
    $O_j += S_c$\;
-   Indicate that seeker $c$ tentatively has job $j$ \;
+   \texttt{Indicate that seeker $c$ tentatively has job $j$} \;
    $J_c = j$\;
    $I_{c_e} = 1$\;
    }
@@ -85,7 +86,7 @@ Suppose the goal of a system owner is to allow couples to co-locate more often, 
 \SetAlgoLined
 \SetKwFunction{FCheckPri}{CheckPriority}
 \Fn{\FCheckPri{seeker, job}}{
-If job $j$ has open positions Or if seeker $c$ preferred by job owner $j$ than their least preferred person currently on their slate \;
+\texttt{If job $j$ has open positions or if seeker $c$ preferred by job owner $j$ than their least preferred person currently on their slate} \;
 \uIf{$|O_j| < l_j$ or $P^{O}_{j,c} < P^{O}_{j,w} $ such that $P^{O}_{j,w} = \max \{P^{O}_{j,v} | S_v \in O_j\}$}{
   \KwRet{1}\;
    }{
@@ -94,39 +95,41 @@ If job $j$ has open positions Or if seeker $c$ preferred by job owner $j$ than t
    }
 \SetKwFunction{FCouple}{SeekCouple}
 \Fn{\FCouple{seeker priorities, owner priorities, owner slates, seeker indicators}}{
- Find a job for the seeking couple $c_e = (c_1, c_2)$ if either of them are not slated for a job \;
-While both members of the seeking entity do not have a job, iterate down the list of preferences of seeker entity $c_e$ the $c_e$'s \;
+ \texttt{Find a job for the seeking couple $c_e = (c_1, c_2)$ if either of them are not slated for a job} \;
+\texttt{While both members of the seeking entity do not have a job, iterate down the list of preferences of seeker entity $c_e$} \;
  Initialize $p = 1$\;
  \While{$I_{c_e} == 0$}{
  $j_1 = r$ such that $P^S_{r,c_1} = p$ \;
  $j_2 = r$ such that $P^S_{r,c_2} = p$ \;
- Check if this set of jobs could go to the couple \;
+ \texttt{Check if this set of jobs could go to the couple} \;
  \uIf{\FCheckPri{$c_1,j_1$} and \FCheckPri{$c_2,j_2$}}{
-  Flag that they are tentatively assigned positions \;
+  \texttt{Flag that they are tentatively assigned positions} \;
   $I_{c_e} = 1$ \;
-  Assign the positions\;
+  \texttt{Assign the positions}\;
   \For{$(c,j) \in ((c_1, j_1),(c_2,j_2))$}{
   \uIf{$|O_j| < l_j$}{
-   Add the seeker $c$ to the slate of owner of job $j$ \;
+   \texttt{Add the seeker $c$ to the slate of owner of job $j$} \;
    $O_j += S_c$\;
-   Indicate that seeker $c$ tentatively has job $j$ \;
+   \texttt{Indicate that seeker $c$ tentatively has job $j$} \;
    $J_c = j$\;
    }
-   Or if seeker $c$ is preferred by job owner $j$ over their least preferred person currently on their slate \;
+   \texttt{Or if seeker $c$ is preferred by job owner $j$ over their least preferred person currently on their slate} \;
    \ElseIf{$P^{O}_{j,c} < P^{O}_{j,w} $ such that $P^{O}_{j,w} = \max \{P^{O}_{j,v} | S_v \in O_j\}$}{
-   Remove the seeker $w$ (least preferred) from the slate of owner of job $j$ \;
+   \texttt{Remove the seeker $w$ (least preferred) from the slate of owner of job $j$} \;
    $O_j -= S_w$\;
-   Indicate that seeker $w$ tentatively does not have a job as an individual\;
+   \texttt{Indicate that seeker $w$ tentatively does not have a job as an individual}\;
    $J_w = 0$\;
-   Indicate that their entity does not have a job, thus if submitted as a couple even if the other member has a job they must move onto their next preference \;
+   \texttt{Indicate that their entity does not have a job, thus if submitted as a couple even if the other member has a job they must move onto their next preference} \;
    $I_{w_e} = 0$ such that $w \in A_{w_e}$\;
-   Add the seeker $c$ to the slate of owner of job $j$ \;
+   \texttt{Add the seeker $c$ to the slate of owner of job $j$} \;
    $O_j += S_c$\;
-   Indicate that seeker $c$ tentatively has job $j$ \;
+   \texttt{Indicate that seeker $c$ tentatively has job $j$} \;
    $J_c = j$\;
    }
    }
    }
+   \texttt{If you have not found a position, look at the next preference} \;
+   $p++$\;
 }
 }
  \caption{Seeking Function for Couples}
