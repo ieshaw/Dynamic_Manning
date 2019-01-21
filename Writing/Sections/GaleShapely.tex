@@ -8,44 +8,44 @@ This is the same algorithm that won the Nobel Prize in 2012 for its application 
 \SetAlgoLined
 \KwResult{There are no pairs $(O_i, S_i), (O_j, S_j)$ such that the pairings $(O_i, S_j), (O_j, S_i)$ would be preferred by all parties.} 
  \For{$c \in \{1, \dots, n\}$}{
- For each job, initialize the job owner's hiring slate to be empty \;
+ \texttt{For each job, initialize the job owner's hiring slate to be empty} \;
  $O_c = \{\null\}$ \;
  } 
  \For{$c \in \{1, \dots, m\}$}{
- For each job seeker initialize their indicator to say \textit{un-slated} \;
+ \texttt{For each job seeker initialize their indicator to say} \textit{un-slated} \;
  $I_c = 0$ \;
- Also initialize to look at the first preference of each job seeker \;
+ \texttt{Also initialize to look at the first preference of each job seeker} \;
  $g_c = 1$\;
  } 
- Check if there are more jobs than seekers, or more seekers than jobs \;
+ \texttt{Check if there are more jobs than seekers, or more seekers than jobs} \;
  $a = \max \big(0, m - \sum_{c = 1}^n l_c \big)$\;
- Seek jobs until either all seekers are hired or all jobs are spoken for \;
+ \texttt{Seek jobs until either all seekers are hired or all jobs are spoken for} \;
  \While{\big( $\sum_{c = 1}^m I_c \leq a $ \big)}{
- Iterate through all the job seekers \;
+ \texttt{Iterate through all the job seekers} \;
  \For{$c \in \{1, \dots, m\}$}{
- Find a job for a seeker $c$ only if they are not slated for a job \;
+ \texttt{Find a job for a seeker $c$ only if they are not slated for a job} \;
  \If{$I_c == 0$}{
- Look for the job that is seeker $c$'s $g^{th}$ preference \;
+ \texttt{Look for the job that is seeker $c$'s $g^{th}$ preference} \;
  $j = r$ such that $P^S_{r,c} = g_c$ \;
- If job $j$ has open positions \;
+ \texttt{If job $j$ has open positions} \;
   \uIf{$|O_j| < l_j$}{
-   Add the seeker $c$ to the slate of owner of job $j$ \;
+   \texttt{Add the seeker $c$ to the slate of owner of job $j$} \;
    $O_j += S_c$\;
-   Indicate that seeker $c$ tentatively has a job \;
+   \texttt{Indicate that seeker $c$ tentatively has a job} \;
    $I_c = 1$\;
    }
-   Or if seeker $c$ preferred by job owner $j$ than their least preferred person currently on their slate \;
+   \texttt{Or if seeker $c$ preferred by job owner $j$ than their least preferred person currently on their slate} \;
    \ElseIf{$P^{O}_{j,c} < P^{O}_{j,w} $ such that $P^{O}_{j,w} = \max \{P^{O}_{j,v} | S_v \in O_j\}$}{
-   Remove the seeker $w$ (least preferred) from the slate of owner of job $j$ \;
+   \texttt{Remove the seeker $w$ (least preferred) from the slate of owner of job $j$} \;
    $O_j -= S_w$\;
-   Indicate that seeker $w$ tentatively does not have a job \;
+   \texttt{Indicate that seeker $w$ tentatively does not have a job} \;
    $I_w = 0$\;
-   Add the seeker $c$ to the slate of owner of job $j$ \;
+   \texttt{Add the seeker $c$ to the slate of owner of job $j$} \;
    $O_j += S_c$\;
-   Indicate that seeker $c$ tentatively has a job \;
+   \texttt{Indicate that seeker $c$ tentatively has a job} \;
    $I_c = 1$\;
    }
- Indicate that the $g^{th}+1$ preference of seeker $c$ has been considered \; 
+ \texttt{Indicate that the $g^{th}+1$ preference of seeker $c$ has been considered} \; 
  $g_c++$\;
  } 
  }
