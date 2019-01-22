@@ -21,9 +21,9 @@ weighted scaling competitiveness score
     n_jobs = 10
     n_seekers = len(df)
     for index,row in df.iterrows():
-        mu = (row ** 2).mean()
+        mu = (row ** 0.5).mean()
         a = 1
-        comp_dict[index] =  1 - mu/((a**2) * n_seekers * n_jobs)
+        comp_dict[index] =  1 - mu/((a**0.5) * (n_seekers**0.5) * n_jobs)
     return comp_dict
 '''
 

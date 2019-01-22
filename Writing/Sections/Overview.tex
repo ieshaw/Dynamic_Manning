@@ -7,18 +7,22 @@ Throughout the paper, we will reference the notation listed in this section.
 \begin{align}
 m &= \text{number of different jobs available}\\
 n &= \text{number of persons}\\
-c_i &= \begin{cases}
-r & \text{ Seeker $i$ requests co-location with Seeker $r$} \\
-0 & \text{ Seeker $i$ does not request co-location}
+O_i &= \text{set of seekers hired by owner of job $i$} \\
+S_i &= \text{job of seeker $i$} \\
+E &= \text{Seeker Entity Matrix}, \in \mathbb{Z}^{+, n_e \times 2}\\
+e_{i,2} &= \begin{cases}
+r & \text{ Seeker $e_{i,1}$ requests co-location with Seeker $r$} \\
+0 & \text{ Seeker $e_{i,1}$ does not request co-location}
 \end{cases} \\
 n_c &= \text{number of couples requesting co-location}\\
-&= \sum_{i=1}^n\mathbbm{1}(c_i == 0) \\
+&= \sum_{i=1}^n\mathbbm{1}(e_{i,2} == 0) \\
+n_e &= n - n_c \\
 \vec{P^S_i} &= \text{Preference vector of job seeker $i$, } \in \mathbb{Z}^{+, m \times 1} \\
 P^S &= [\vec{P^S_i} | \dots | \vec{P^S_n}] \in \mathbb{Z}^{+, m \times n}, \\ 
 &\text{\indent Preference Matrix of Seekers} \\
 \vec{P^O_i} &= \text{Preference vector of job owner $j$, } \in \mathbb{Z}^{+, n \times 1} \\
 P^O &= [\vec{P^O_i} | \dots | \vec{P^O_n}] \in \mathbb{Z}^{+, n \times m}, \\ 
-&\text{\indent Preference Matrix of Seekers} \\
+&\text{\indent Preference Matrix of Job Owners} \\
 \vec{A} &= \text{Position Available vector }\in \mathbb{Z}^{+, m \times 1} \\
 a_j &= \text{Amount of positions for job $j$, } \in \mathbb{Z}^{+} \\
 X &= \text{Placement Matrix} \in \{0,1\}^{n \times m} \\
