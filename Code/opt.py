@@ -36,21 +36,32 @@ def opt(S_df, O_df, A_df, C_df,D_df):
     for index, row in C_df.iterrows():
         if row['Partner_id'] != 0:
             n_c += 1
-            #(mx1)x(1xm) to make an (mxm) then sum accross all these couples, then hadamard 
-            #product with D, then filter if above 50 miles
-            H += X[:,index].T * X[:, row['Partner_id']]
-    #Here we do the hadamard product, divide by two since each couple was counted twice
+            '''
+            Create Matrix H where H_{ij} is 1 if the couple holds jobs i and j and 0 otherwise
+            This can be then elementwise multiplied by the matrix D where D_{ij} is the 
+            Distance in miles between job i and job j
+            To do this we take the placement vectors for both members of the couple from 
+            the placement matrix X. Multiplying these two vectors will create the aforementioned H 
+            Quick and dirty in math terms:
+            (mx1)x(1xm) to make an (mxm) then sum accross all these couples, then hadamard 
+            product with D, then filter if above 50 miles
+            '''
+            #TODO: Uncomment after figure out what is causing DCP rule error
+            #H += cp.matmul(X[:,index],X[:, row['Partner_id']].T)
+    #Here we do the hadamard(elementwise) product
     #Then max/min to get eveything over 49 miles to a value of 1
-    H = cp.minimum((cp.maximum(cp.multiply(H,0.5 * D),49) - 49),1)
+    #TODO: Uncomment this after figure out what is causeing DCP rule error
+    #H = cp.minimum((cp.maximum(cp.multiply(H, D),49) - 49),1)
     n_c *= 0.5
     obj = cp.Problem(cp.Minimize(f),
             [cp.atoms.affine.reshape.reshape(cp.sum(X,axis=1),(m,1)) <= A,
                 cp.sum(X) == k] )
     '''
+    #TODO: Uncomment this after figure out what is causeing DCP rule error
     #With the couples distance constraint
     obj = cp.Problem(cp.Minimize(f),
             [cp.atoms.affine.reshape.reshape(cp.sum(X,axis=1),(m,1)) <= A,
-                cp.sum(X) == k, cp.sum(H) >= n_c * 0.95] )
+                cp.sum(X) == k, cp.sum(H) <= 0.5 *n_c * (1-0.95)] )
     '''
     #obj.solve(solver=cp.ECOS_BB)
     obj.solve()

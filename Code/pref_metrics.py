@@ -7,25 +7,26 @@ def competitiveness(df):
             preference ranking of decider j of slate option i
     output: dictionary, keys are slate options, enteries are the competitiveness scores
     '''
+    #weighted scaling competitiveness score
+    comp_dict = {}
+    n_jobs = 10
+    n_seekers = len(df)
+    for index,row in df.iterrows():
+        mu = (row ** 0.5).mean()
+        #TODO: Read in A_df for 'a' value
+        a = 1
+        comp_dict[index] =  round(1 - mu/((a**0.5) * (n_seekers**0.5) * n_jobs),4)
+    return comp_dict
+    '''
+    Sciorintino competitiveness Score
+
     comp_dict = {}
     for index,row in df.iterrows():
         mu = row.mean()
         sigma = (((row - mu).apply(lambda x: max(x,0)))**2).sum()
         comp_dict[index] = (mu * (len(row)**2))/(sigma)
     return comp_dict
-
-'''
-weighted scaling competitiveness score
-
-    comp_dict = {}
-    n_jobs = 10
-    n_seekers = len(df)
-    for index,row in df.iterrows():
-        mu = (row ** 0.5).mean()
-        a = 1
-        comp_dict[index] =  1 - mu/((a**0.5) * (n_seekers**0.5) * n_jobs)
-    return comp_dict
-'''
+    '''
 
 def generalism(df):
     '''
