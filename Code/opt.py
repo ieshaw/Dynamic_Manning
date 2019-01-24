@@ -2,6 +2,8 @@ import cvxpy as cp
 import numpy as np
 import pandas as pd
 
+DEBUG = False
+
 def opt(S_df, O_df, A_df, C_df,D_df):
     '''
     input S_df: Pandas DataFrame with row index job, column headers sailors
@@ -46,23 +48,21 @@ def opt(S_df, O_df, A_df, C_df,D_df):
             (mx1)x(1xm) to make an (mxm) then sum accross all these couples, then hadamard 
             product with D, then filter if above 50 miles
             '''
-            #TODO: Uncomment after figure out what is causing DCP rule error
-            #H += cp.matmul(X[:,index],X[:, row['Partner_id']].T)
-    #Here we do the hadamard(elementwise) product
-    #Then max/min to get eveything over 49 miles to a value of 1
-    #TODO: Uncomment this after figure out what is causeing DCP rule error
-    #H = cp.minimum((cp.maximum(cp.multiply(H, D),49) - 49),1)
+            if DEBUG:
+                H += cp.matmul(X[:,index],X[:, row['Partner_id']].T)
     n_c *= 0.5
-    obj = cp.Problem(cp.Minimize(f),
-            [cp.atoms.affine.reshape.reshape(cp.sum(X,axis=1),(m,1)) <= A,
-                cp.sum(X) == k] )
-    '''
-    #TODO: Uncomment this after figure out what is causeing DCP rule error
-    #With the couples distance constraint
-    obj = cp.Problem(cp.Minimize(f),
-            [cp.atoms.affine.reshape.reshape(cp.sum(X,axis=1),(m,1)) <= A,
-                cp.sum(X) == k, cp.sum(H) <= 0.5 *n_c * (1-0.95)] )
-    '''
+    if DEBUG:
+        #Here we do the hadamard(elementwise) product
+        #Then max/min to get eveything over 49 miles to a value of 1
+        H = cp.minimum((cp.maximum(cp.multiply(H, D),49) - 49),1)
+        #With the couples distance constraint
+        obj = cp.Problem(cp.Minimize(f),
+                [cp.atoms.affine.reshape.reshape(cp.sum(X,axis=1),(m,1)) <= A,
+                    cp.sum(X) == k, cp.sum(H) <= 0.5 *n_c * (1-0.95)] )
+    else:
+        obj = cp.Problem(cp.Minimize(f),
+                [cp.atoms.affine.reshape.reshape(cp.sum(X,axis=1),(m,1)) <= A,
+                    cp.sum(X) == k] )
     #obj.solve(solver=cp.ECOS_BB)
     obj.solve()
     X_df = pd.DataFrame(X.value, index=S_df.index, columns=S_df.columns)
@@ -77,7 +77,8 @@ def main():
     A_df = pd.read_csv('Data/A.csv', index_col=0)  
     C_df = pd.read_csv('Data/C.csv', index_col=0)  
     X_df = opt(S_df, O_df, A_df, C_df, D_df)
-    X_df.to_csv('Data/X.csv', header=True, index=True)
+    print(X_df.head())
+    #X_df.to_csv('Data/X.csv', header=True, index=True)
 
 if __name__ == '__main__':
     main()
