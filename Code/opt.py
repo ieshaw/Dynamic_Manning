@@ -2,7 +2,7 @@ import cvxpy as cp
 import numpy as np
 import pandas as pd
 
-DEBUG = False
+DEBUG=False
 
 def opt(S_df, O_df, A_df, C_df,D_df):
     '''
@@ -14,10 +14,12 @@ def opt(S_df, O_df, A_df, C_df,D_df):
             preference ranking of owner j of sailor i
     input A_df: Pandas DataFrame with columns 'Job'i (strings)  and 'Num_Positions' (integers) 
     input C_df: Pandas DataFrame with index 'Seeker_id' and columns ['Seeker','Partner','Partner_id'] 
-    ouyput Z_df: Pandas DataFrame with row index job, column headers sailors
+    output X_df: Pandas DataFrame with row index job, column headers sailors
             the entries are the job placements. Entry at row i, column j is 
             1 is sailor j has job i, 0 otherwise
     '''
+    #TODO: Take out this DEBUG Flag
+    DEBUG=False
     # Infer all the terms of the optimization funciton
     P_S = S_df.values
     P_O = O_df.values
@@ -67,6 +69,8 @@ def opt(S_df, O_df, A_df, C_df,D_df):
     obj.solve()
     X_df = pd.DataFrame(X.value, index=S_df.index, columns=S_df.columns)
     X_df = X_df.round()
+    #Get Rid of Negativs
+    X_df = X_df ** 2
     return X_df
 
 def main():
