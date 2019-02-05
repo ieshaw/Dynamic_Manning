@@ -1,0 +1,15 @@
+\subsection{Similarity}
+
+To understand the multi-dimensional similarity of two vectors, the natural choice is the squared Euclidean distance between the two vectors. 
+
+\[\sum_{k=1}^{m} (P^S_{i,k} - P^S_{j,k})^2\]
+
+Yet, a job seeker's first preference is much more important to them than their hundredth preference, indicating that the similarity of top preferences of two job seekers is indicative of their overall similarity than the comparison of their much lower ranked preference.  Thus we want a weight on the distance according to the average importance of the metric to the two seekers.
+
+\[w_k = \frac{2m - (P^S_{i,k} + P^S_{j,k})}{2m}\]
+
+
+Thus we propose a similarity measure of two job seekers using preference data should be a weighted squared Euclidean distance between their two preference vectors. To ensure the maximum value is 1 for complete similarity (identical preferences), we scale the metric by a factor of $(m-1)^2$ (because the maximum difference between two rankings is $m-1$)and subtract it from 1.
+
+Thus the similarity function is
+\[\texttt{Similarity}(P^S_i, P^S_j) = 1 - \frac{1}{(m-1)^2}\sum_{k=1}^{m} \frac{2m - (P^S_{i,k} + P^S_{j,k})}{2m}(P^S_{i,k} - P^S_{j,k})^2\]
