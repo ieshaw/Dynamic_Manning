@@ -9,7 +9,11 @@ m &= \text{number of different jobs available}\\
 n &= \text{number of persons}\\
 O_i &= \text{set of seekers hired by owner of job $i$} \\
 S_i &= \text{job of seeker $i$} \\
-C &= 
+C &= \text{Co-Location Matrix, upper triangular}\\
+C_{ij} &= \begin{cases}
+1 & j > i, \text{ and  Seeker $i$ requests co-location with Seeker $j$} \\
+0 & j\leq i, \text{ or Seeker $e_{i,1}$ does not request co-location}
+\end{cases} \\
 E &= \text{Seeker Entity Matrix}, \in \mathbb{Z}^{+, n_e \times 2}\\
 e_{i,2} &= \begin{cases}
 r & \text{ Seeker $e_{i,1}$ requests co-location with Seeker $r$} \\

@@ -37,3 +37,35 @@ Co-location Function $C$ returns $1$ if the couple is considered co-located, 0 i
 The inspiration and initial formulation of this optimization was done by a young Air Force officer who has since moved onto the private sector. 
 
 The extension of the formulation to include the Co-Location Function $C$ and have more than one positions for each job $a_i$ are the contributions of this team. 
+
+\subsubsection{Explanation of Co-location constraint math}
+
+ \[\frac{1}{n_c} \sum \sum X^TCX \geq 0.95\]
+
+ This works because
+
+ \begin{align*}
+(CX)_{ij} &= \begin{cases}
+1 & \text{Seeker $i$'s mate is assigned to job $j$} \\
+0& \text{otherwise}
+\end{cases} \\
+(X^T)_{ij} &= \begin{cases}
+1 & \text{Seeker $i$ is assigned to job $j$} \\
+0 & \text{otherwise}
+\end{cases}\\
+(X^TCX)_{ij} &= \begin{cases}
+n & \text{Number of couples assigned to the $(i,j)$ job pairing} \\
+0 & \text{otherwise}
+\end{cases}\\
+D_{ij} &= \begin{cases}
+1 & \text{The job pairing $(i,j)$ is considered co-location } \\
+0 & \text{otherwise}
+\end{cases}\\
+(X^TCX) \dot D &= \text{ The Hadamard (element-wise) multiplication of $(X^TCX)$ and $D$} \\
+\big((X^TCX) \dot D \big)_{ij} &= \begin{cases}
+n & \text{Number of co-located couples assigned to the $(i,j)$ job pairing} \\
+0 & \text{otherwise}
+\end{cases}\\
+\sum \sum (X^TCX)_{ij} &= \text{Number of couples co-located} \\
+\frac{1}{n_c} \sum \sum (X^TCX)_{ij} &= \text{Ratio of couples co-located}
+ \end{align*}
