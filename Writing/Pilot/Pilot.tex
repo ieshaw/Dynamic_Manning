@@ -1,11 +1,11 @@
 \documentclass{article}
+\usepackage{cite}
 \usepackage{graphicx,fancyhdr,amsmath,amssymb,amsthm,subfig,url,hyperref}
 \usepackage[margin=1in]{geometry}
 \usepackage{comment}
 \usepackage{framed} 
 \usepackage{indentfirst}
 \usepackage{appendix}
-
 \usepackage{bbm}
 \usepackage{algorithmic}
 \usepackage[ruled,vlined]{algorithm2e}
@@ -45,8 +45,8 @@
 %-------------------------------- Title ----------------------------------
 
 \title{Dynamic Manning \\ \large Detailing Marketplace Pilot for US Navy}
-\author{Ian Shaw, LTJG, USN \quad Zac Dannelly, LTJG, USN \quad Brian Yarborough, 1LT, USAF \\
-Drew Calcagno, LTJG, USN \quad Richard Kuzma, LTJG, USN}
+\author{Ian Shaw, LTJG, USN \quad Zac Dannelly, LTJG, USN \\
+Drew Calcagno, LTJG, USN \quad Richard Kuzma, LTJG, USN \\ Brian Yarborough, 1LT, USAF}
 
 %--------------------------------- Text ----------------------------------
 
@@ -102,6 +102,10 @@ New Abstract.
 
 \input{Sections/Abstract}
 
+\section{Literature Review}
+
+\include{Sections/Lit_Rev}
+
 \section{Overview}
 
 \input{Sections/Overview}
@@ -141,6 +145,8 @@ New Abstract.
 
 \input{Sections/Suggested_Ordering}
 
+
+\nocite{*}
 \bibliography{Sections/DM}
 \bibliographystyle{plain}
 
