@@ -4,6 +4,7 @@
 \usepackage{comment}
 \usepackage{framed} 
 \usepackage{indentfirst}
+\usepackage{appendix}
 
 \usepackage{bbm}
 \usepackage{algorithmic}
@@ -43,21 +44,63 @@
 
 %-------------------------------- Title ----------------------------------
 
-\title{Detailing Marketplace: Pilot for US Navy}
-\author{Ian Shaw, LTJG, USN \quad Zac Dannelly, LTJG, USN \quad Brian Yarborough, 1LT, USAF}
+\title{Dynamic Manning \\ \large Detailing Marketplace Pilot for US Navy}
+\author{Ian Shaw, LTJG, USN \quad Zac Dannelly, LTJG, USN \quad Brian Yarborough, 1LT, USAF \\
+Drew Calcagno, LTJG, USN \quad Richard Kuzma, LTJG, USN}
 
 %--------------------------------- Text ----------------------------------
 
 \begin{document}
 \maketitle
 
-\input{Sections/Abstract}
+\begin{abstract}
+New Abstract.
+\end{abstract}
+
 
 \newpage
 
 \tableofcontents
 
 \newpage
+
+\section{Introduction}
+
+\subsection{Problem Description}
+
+\section{Literature Review}
+
+\section{Solution Description}
+
+\subsection{Algorithm}
+
+\subsection{Metrics}
+
+\subsubsection{Pre-Match Metrics}
+
+\section{Pilot}
+
+\subsection{Overview}
+
+\subsection{Results}
+
+\section{Alternate Formulations}
+
+\subsection{Wagering}
+
+\subsection{Specialization Objective}
+
+\section{Future Work}
+
+\newpage
+
+\appendix
+\appendixpage
+\addappheadtotoc
+
+\section{Old Abstract}
+
+\input{Sections/Abstract}
 
 \section{Overview}
 
@@ -82,6 +125,14 @@
 \input{Sections/Generalism}
 
 \input{Sections/Specialization}
+
+\subsection{Preference Correlation}
+
+\input{Sections/Pref_corr.tex}
+
+\section{Alternative Formulations}
+
+\input{Sections/Alt_Formulations.tex}
 
 \section{Metrics Beyond Preference Data}
 \label{Beyond}
