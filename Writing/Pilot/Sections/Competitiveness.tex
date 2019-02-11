@@ -67,4 +67,20 @@ C_1 &= 0.892\\
 O_2 &= [2,2,2,2,1] \\
 C_2 &= 0.885
 \end{align}
- 
+
+\subsubsection{Weighted Scaling: Group Formulation}
+
+\begin{align*}
+N &= \sum_i a_j \\
+&= \text{ number of openings across Navy}\\
+F_j &= 1 - \frac{a_j}{N} \\
+&= \text{ \% of openings job $j$ is of all openings in the Navy} \\ 
+S^S_i &= 1 - \frac{1}{nm} \sum_j \sqrt{P_{ij}^O} \\
+&= \text{ sought after metric} \\
+C_i^S &= S^S_i \\
+&= \text{ competitiveness of a job seeker} \\
+C_j^O &= F_j S^O_j \\
+&= \text{ competitiveness of a job} \\
+\end{align*}
+
+PRobably should put an example in here.
