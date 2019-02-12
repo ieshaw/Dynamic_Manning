@@ -18,6 +18,7 @@ def opt(S_df, O_df, A_df, C_df,D_df):
             the entries are the job placements. Entry at row i, column j is 
             1 is sailor j has job i, 0 otherwise
     '''
+    #TODO: Input Checking, deminsions
     #TODO: Take out this DEBUG Flag
     DEBUG=False
     # Infer all the terms of the optimization funciton

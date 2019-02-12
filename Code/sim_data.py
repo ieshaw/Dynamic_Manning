@@ -72,7 +72,7 @@ def sim_navy(n_sailors=10, n_jobs=10, couple_ratio=0.2):
         naval_bases['Billets'] = (naval_bases['Normalized'] * n_jobs).apply(np.ceil).astype(int)
         jobs = naval_bases['Name'].values
         A_df = naval_bases[['Name','Billets']].copy()
-        A_df = A.rename(mapper={'Name':'Job', 'Billets': 'Num_Positions'}, axis='columns')
+        A_df = A_df.rename(mapper={'Name':'Job', 'Billets': 'Num_Positions'}, axis='columns')
     else:
         jobs = naval_bases['Name'].values[:n_jobs]
         A_df = pd.DataFrame({'Job': jobs, 'Num_Positions': [1 for i in range(n_jobs)]}) 
