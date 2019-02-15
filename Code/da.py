@@ -2,6 +2,7 @@ import cvxpy as cp
 import matching
 import numpy as np
 import pandas as pd
+import sys
 
 def da(S_df, O_df, A_df, optimal='s'):
     '''
@@ -61,13 +62,14 @@ def gen_players(player_df, capacity=False, capacity_df=None):
     return players
 
 def main():
-    #import all the data
-    S_df = pd.read_csv('Data/S.csv', index_col=0)  
-    O_df = pd.read_csv('Data/O.csv', index_col=0)  
-    A_df = pd.read_csv('Data/A.csv', index_col=0)  
-    X_df = da(S_df, O_df, A_df, optimal='o')
-    print(X_df.head())
-    #X_df.to_csv('Data/X.csv', header=True, index=True)
+    if len(sys.argv) != 2:
+        raise ValueError('One argument needed. Data Directory.')
+    data_dir = sys.argv[1]
+    S_df = pd.read_csv(data_dir + '/S.csv', index_col=0)  
+    O_df = pd.read_csv(data_dir + '/O.csv', index_col=0)  
+    A_df = pd.read_csv(data_dir + '/A.csv', index_col=0)  
+    X_df = da(S_df, O_df, A_df, optimal='s')
+    X_df.to_csv(data_dir + '/X.csv', header=True, index=True)
 
 if __name__ == '__main__':
     main()
