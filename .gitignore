@@ -1,6 +1,7 @@
 # System Specific
 .DS_Store
 dm/
+test_data/
 
 # Latex Specific
 Output/
