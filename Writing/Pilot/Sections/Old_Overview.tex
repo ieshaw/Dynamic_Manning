@@ -1,0 +1,39 @@
+In this report we outline the mathematical basis for a detailing marketplace. We recognize that previous efforts have been attempted in this arena, many failing due to the inaccessibility of Navy personnel data. For this reason, most of this report focuses on what can be accomplished without personnel data, just the submitted preferences of job seekers and job owners.  Sections \ref{Matching} and \ref{Metrics} focus on efforts that would be enabled by only preferences, not until Section \ref{Beyond} do we allude to efforts that could be pursued if further data were available.
+
+\subsection{Notation}
+
+Throughout the paper, we will reference the notation listed in this section.
+
+\begin{align}
+m &= \text{number of different jobs available}\\
+n &= \text{number of persons}\\
+O_i &= \text{set of seekers hired by owner of job $i$} \\
+S_i &= \text{job of seeker $i$} \\
+C &= \text{Co-Location Matrix, upper triangular}\\
+C_{ij} &= \begin{cases}
+1 & j > i, \text{ and  Seeker $i$ requests co-location with Seeker $j$} \\
+0 & j\leq i, \text{ or Seeker $e_{i,1}$ does not request co-location}
+\end{cases} \\
+E &= \text{Seeker Entity Matrix}, \in \mathbb{Z}^{+, n_e \times 2}\\
+e_{i,2} &= \begin{cases}
+r & \text{ Seeker $e_{i,1}$ requests co-location with Seeker $r$} \\
+0 & \text{ Seeker $e_{i,1}$ does not request co-location}
+\end{cases} \\
+n_c &= \text{number of couples requesting co-location}\\
+&= \sum_{i=1}^n\mathbbm{1}(e_{i,2} == 0) \\
+n_e &= n - n_c \\
+\vec{P^S_i} &= \text{Preference vector of job seeker $i$, } \in \mathbb{Z}^{+, m \times 1} \\
+P^S &= [\vec{P^S_i} | \dots | \vec{P^S_n}] \in \mathbb{Z}^{+, m \times n}, \\ 
+&\text{\indent Preference Matrix of Seekers} \\
+\vec{P^O_i} &= \text{Preference vector of job owner $j$, } \in \mathbb{Z}^{+, n \times 1} \\
+P^O &= [\vec{P^O_i} | \dots | \vec{P^O_n}] \in \mathbb{Z}^{+, n \times m}, \\ 
+&\text{\indent Preference Matrix of Job Owners} \\
+\vec{A} &= \text{Position Available vector }\in \mathbb{Z}^{+, m \times 1} \\
+a_j &= \text{Amount of positions for job $j$, } \in \mathbb{Z}^{+} \\
+X &= \text{Placement Matrix} \in \{0,1\}^{n \times m} \\
+x_{i,j} &= \begin{cases}
+1 & \text{if $S_i$ is slated for job $j$}\\
+0 & \text{otherwise}
+\end{cases}
+\end{align}
+
