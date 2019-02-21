@@ -20,9 +20,7 @@
 %----------------------- Macros and Definitions --------------------------
 
 %%% FILL THIS OUT
-\newcommand{\studentname}{Ian Shaw}
-\newcommand{\suid}{ieshaw}
-\newcommand{\exerciseset}{Class Notes}
+\newcommand{\projectname}{Algorithmic Dynamic Matching }
 %%% END
 
 %\renewcommand{\theenumi}{\bf \Alph{enumi}}
@@ -34,8 +32,8 @@
 \fancypagestyle{plain}{}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[LO,RE]{\sffamily\bfseries\large Dynamic Manning Project}
-\fancyfoot[LO,RE]{\sffamily\bfseries\large ianedwardshaw (at) gmail.com}
+\fancyhead[LO,RE]{\sffamily\bfseries\large \projectname Project}
+% \fancyfoot[LO,RE]{\sffamily\bfseries\large ianedwardshaw (at) gmail.com}
 \fancyfoot[RO,LE]{\sffamily\bfseries\thepage}
 \renewcommand{\headrulewidth}{1pt}
 \renewcommand{\footrulewidth}{1pt}
@@ -44,9 +42,12 @@
 
 %-------------------------------- Title ----------------------------------
 
-\title{Dynamic Manning \\ \large Detailing Marketplace Pilot for US Navy}
-\author{Ian Shaw, LTJG, USN \quad Zac Dannelly, LTJG, USN \\
-Drew Calcagno, LTJG, USN \quad Richard Kuzma, LTJG, USN \\ Brian Yarborough, 1LT, USAF}
+\title{\projectname \\ \large Detailing Marketplace Pilot for US Navy}
+\author{Ian Shaw, LTJG, USN \thanks{E stuff} 
+\and Zac Dannelly, LTJG, USN \thanks{Z stuff}
+\and Drew Calcagno, LTJG, USN \thanks{X Stuff} 
+\and Richard Kuzma, LTJG, USN \thanks{Q Stuff} 
+\and Brian Yarborough, 1LT, USAF \thanks{Brian Stuff}}
 
 %--------------------------------- Text ----------------------------------
 
@@ -54,9 +55,8 @@ Drew Calcagno, LTJG, USN \quad Richard Kuzma, LTJG, USN \\ Brian Yarborough, 1LT
 \maketitle
 
 \begin{abstract}
-New Abstract.
+\input{Sections/Abstract.tex}
 \end{abstract}
-
 
 \newpage
 
@@ -76,17 +76,17 @@ New Abstract.
 
 \input{Sections/Lit_Rev}
 
-\section{Solution Description}
-
-\subsection{Algorithm}
+\section{Algorithm}
 
 \input{Sections/Algo.tex}
 
-\subsection{Metrics}
+\section{Metrics}
 
-\subsubsection{Pre-Match Metrics}
+\subsection{Pre-Match Metrics}
 
-\input{Sections/Pre_Match_Metrics.tex}
+\subsubsection{Competitiveness}
+
+\input{Sections/Competitiveness.tex}
 
 \subsubsection{Post-Match Metrics}
 
@@ -104,6 +104,8 @@ New Abstract.
 
 \section{Alternate Formulations}
 
+\input{Sections/Alt_Formulations.tex}
+
 \subsection{Wagering}
 
 \subsection{Specialization Objective}
@@ -118,22 +120,14 @@ New Abstract.
 \appendixpage
 \addappheadtotoc
 
-% \section{Old Abstract}
+\section{Notation}
 
-% \input{Sections/Abstract}
+\input{Sections/Notation.tex}
 
-% \section{Overview}
+\section{Matching Algorithms}
+\label{Matching}
 
-% \input{Sections/Overview}
-
-% \section{Matching Algorithms}
-% \label{Matching}
-
-% \input{Sections/GaleShapely}
-
-% \input{Sections/CoLocationAlgo}
-
-% \input{Sections/Optimization}
+\input{Sections/Optimization}
 
 % \section{Metrics with Preference Data}
 % \label{Metrics}
@@ -149,10 +143,6 @@ New Abstract.
 % \subsection{Preference Correlation}
 
 % \input{Sections/Pref_corr.tex}
-
-% \section{Alternative Formulations}
-
-% \input{Sections/Alt_Formulations.tex}
 
 % \section{Metrics Beyond Preference Data}
 % \label{Beyond}
