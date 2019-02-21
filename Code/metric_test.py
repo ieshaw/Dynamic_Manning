@@ -13,5 +13,11 @@ O = O.replace(0, np.NaN)
 S = S.replace(0, np.NaN)
 
 # test specialization
+print('\n\nTesting Specialization\n')
 print(pref_metrics.specialization(O.copy()))
-print(O)
+
+# test correlation
+print('\n\nTesting Correlation\n')
+print(pref_metrics.correlation(O,S))
+print('\nTesting Correlation (cont.)\n')
+print(pref_metrics.correlation(O,S,axis=1))

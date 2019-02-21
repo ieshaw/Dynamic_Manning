@@ -28,6 +28,25 @@ def competitiveness(df):
     return comp_dict
     '''
 
+def correlation(df1, df2, axis=0):
+    '''
+    input:  Two Pandas DataFrames with transposed rows and columns. Zeros converted
+            np.NaN. If axis=0 (default) then labels will be the column headers
+            of the first dataframe. If axis=1 then headers of second dataframe.
+    output: Pandas DataFrame with pearson standard correlation of two dataframes.
+    '''
+
+    # labels become header of df2
+    if axis:
+        tf1 = df1.copy().transpose()
+        return df2.corrwith(tf1)
+    # labels become header of df1
+    else:
+        tf2 = df2.copy().transpose()
+        return df1.corrwith(tf2)
+
+
+
 def generalism(df):
     '''
     input: Pandas DataFrame with row index slate options, column headers deciders
