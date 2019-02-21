@@ -68,12 +68,21 @@ def specialization(df):
     input: Pandas DataFrame with row index slate options, column headers deciders
             the entries are the preferences. Entry at row i, column j is the 
             preference ranking of decider j of slate option i
-    output: dictionary, keys are slate options, enteries are the competitiveness scores
+    output: dictionary, keys are slate options, enteries are the specialization scores
+
+    WILL ADD MEAN, MIN, SPEC COLUMNS TO DF. Pass a copy if you do not want this.
     '''
-    spec_dict = {}
-    for index,row in df.iterrows():
-        spec_dict[index] = row.min()
-    return spec_dict
+
+    # helper function to do math on each row
+    def spec_calc(row):
+        return (row['mean']-row['min']) / (row['mean']+row['min'])
+
+    df['mean'] = df.mean(axis=1)
+    df['min'] = df.min(axis=1)
+
+    df['spec'] = df.apply(spec_calc, axis=1)
+
+    return df['spec']
 
 def pref_metrics(df):
     '''

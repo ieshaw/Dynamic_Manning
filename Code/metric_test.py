@@ -13,4 +13,5 @@ O = O.replace(0, np.NaN)
 S = S.replace(0, np.NaN)
 
 # test specialization
-print(pref_metrics.specialization(O))
+print(pref_metrics.specialization(O.copy()))
+print(O)
