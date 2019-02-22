@@ -3,9 +3,14 @@
 Competitiveness measures the relative desirability of a given sailor or job based on the expressed preference ranking of the other party. We wanted to consider a more sophisticated way of determining this metric beyond an average ranking for either the sailor or job as it is very susceptible to a right tail bias.  For example, a position ranked 1st by ten individuals and hundredth by twenty individuals has the same average ranking as a job ranked seventh by all thirty individuals; yet the prior is much more competitive. To attempt to compensate for this, we adjust the average by a power of one half is to lessen the impact of very low preferences thereby weighting favorable preference more in our score consideration. 
  In order to generalize the competitiveness score we scale the resulting average by the total number of jobs or sailors within the system. This allows for competitiveness to range from 1 being most competitive, and 0 being not competitive at all.
 
+\begin{align}
+F_j &= 1 - \frac{a_j}{m_a} \quad&&\texttt{ \% of openings job $j$ is of all openings in the Navy} \\ 
+S^S_i &= 1 - \frac{1}{nm} \sum_j \sqrt{P_{ij}^O} \quad &&\texttt{ sought after metric} \\
+C_i^S &= S^S_i \quad &&\texttt{ competitiveness of a job seeker} \\
+C_j^O &= F_j S^O_j \quad  &&\texttt{ competitiveness of a job} \\
+\end{align}
 
-[math here]
-
+To follow the development of this metric, more details are in Appendix (\ref{Competitiveness_Extended}).
 
 \[\textit{Impact}\]
 
