@@ -46,7 +46,7 @@ def correlation(df1, df2, axis=0):
         return df1.corrwith(tf2)
 
 
-
+# deprecated
 def generalism(df):
     '''
     input: Pandas DataFrame with row index slate options, column headers deciders
@@ -87,7 +87,7 @@ def specialization(df):
     input: Pandas DataFrame with row index slate options, column headers deciders
             the entries are the preferences. Entry at row i, column j is the 
             preference ranking of decider j of slate option i
-    output: dictionary, keys are slate options, enteries are the specialization scores
+    output: Pandas Dataframe, column headers slate options, enteries are specialization scores
 
     WILL ADD MEAN, MIN, SPEC COLUMNS TO DF. Pass a copy if you do not want this.
     '''
