@@ -74,21 +74,17 @@ def specialization(df):
         spec_dict[index] = (mu - mn)/(mu + mn)
     return spec_dict
 
-def correlation(df1, df2, axis=0):
+def correlation(df1, df2):
     '''
     input:  Two Pandas DataFrames with transposed rows and columns. Zeros converted
             np.NaN. If axis=0 (default) then labels will be the column headers
             of the first dataframe. If axis=1 then headers of second dataframe.
-    output: Pandas DataFrame with pearson standard correlation of two dataframes.
+    output: Pandas DataFrame with pearson standard correlation of the columns of 
+            the first dataframe  and rows of the second dataframe. If seeker_df 
+            is first and owner df second, the correlation is the correlation of 
+            the ranks the seekers have for themselves with how the owners rank them. 
     '''
-    # labels become header of df2
-    if axis:
-        tf1 = df1.copy().transpose()
-        return df2.corrwith(tf1)
-    # labels become header of df1
-    else:
-        tf2 = df2.copy().transpose()
-        return df1.corrwith(tf2)
+    return df1.corrwith(df2.T, axis=0)
 
 def pref_metrics(df):
     '''
@@ -151,12 +147,12 @@ def main():
         print('-----------------------------------')
         print('Seeker Preference Correlation')
         print('-----------------------------------')
-        corr_df = seeker_df.corrwith(owner_df.T, axis=1)
+        corr_df = correlation(seeker_df,owner_df)
         print(corr_df.head())
         print('-----------------------------------')
         print('Owner Preference Correlation')
         print('-----------------------------------')
-        corr_df = owner_df.corrwith(seeker_df.T, axis=1)
+        corr_df = correlation(owner_df,seeker_df)
         print(corr_df.head())
         print('-----------------------------------')
 
