@@ -4,7 +4,7 @@ Competitiveness measures the relative desirability of a given sailor or job base
  In order to generalize the competitiveness score we scale the resulting average by the total number of jobs or sailors within the system. This allows for competitiveness to range from 1 being most competitive, and 0 being not competitive at all.
 
 \begin{align}
-F_j &= 1 - \frac{a_j}{m_a} \quad&&\texttt{ \% of openings job $j$ is of all openings in the Navy} \\ 
+F_j &= 1 - \frac{a_j}{M} \quad&&\texttt{ \% of openings job $j$ is of all openings in the Navy} \\ 
 S^S_i &= 1 - \frac{1}{nm} \sum_j \sqrt{P_{ij}^O} \quad &&\texttt{ sought after metric} \\
 C_i^S &= S^S_i \quad &&\texttt{ competitiveness of a job seeker} \\
 C_j^O &= F_j S^O_j \quad  &&\texttt{ competitiveness of a job} \\
