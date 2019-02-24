@@ -69,7 +69,9 @@ def specialization(df):
     '''
     spec_dict = {}
     for index,row in df.iterrows():
-        spec_dict[index] = row.min()
+        mu = row.mean()
+        mn = row.min() 
+        spec_dict[index] = (mu - mn)/(mu + mn)
     return spec_dict
 
 def pref_metrics(df):
