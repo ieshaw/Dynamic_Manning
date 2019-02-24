@@ -74,6 +74,22 @@ def specialization(df):
         spec_dict[index] = (mu - mn)/(mu + mn)
     return spec_dict
 
+def correlation(df1, df2, axis=0):
+    '''
+    input:  Two Pandas DataFrames with transposed rows and columns. Zeros converted
+            np.NaN. If axis=0 (default) then labels will be the column headers
+            of the first dataframe. If axis=1 then headers of second dataframe.
+    output: Pandas DataFrame with pearson standard correlation of two dataframes.
+    '''
+    # labels become header of df2
+    if axis:
+        tf1 = df1.copy().transpose()
+        return df2.corrwith(tf1)
+    # labels become header of df1
+    else:
+        tf2 = df2.copy().transpose()
+        return df1.corrwith(tf2)
+
 def pref_metrics(df):
     '''
     input: Pandas DataFrame with row index slate options, column headers deciders
@@ -96,8 +112,10 @@ def pref_metrics(df):
 def main():
     print_to_screen = True
     save_to_file = False
+    print_correlation = True
 
     seeker_df = pd.read_csv('Data/seeker_prefs.csv', header=0, index_col=0)
+    seeker_df.index = seeker_df.index.map(str)
     metric_df, sim_df = pref_metrics(seeker_df)
 
     if print_to_screen:
@@ -116,6 +134,7 @@ def main():
         sim_df.to_csv('Data/seeker_similarity.csv', header=True, index=True)
 
     owner_df = pd.read_csv('Data/owner_prefs.csv', header=0, index_col=0)
+    owner_df.index = owner_df.index.map(str)
     metric_df, sim_df = pref_metrics(owner_df)
     
     if print_to_screen:
@@ -126,6 +145,19 @@ def main():
         print('Job Similarity')
         print('-----------------------------------')
         print(sim_df.head())
+        print('-----------------------------------')
+
+    if print_correlation: 
+        print('-----------------------------------')
+        print('Seeker Preference Correlation')
+        print('-----------------------------------')
+        corr_df = seeker_df.corrwith(owner_df.T, axis=1)
+        print(corr_df.head())
+        print('-----------------------------------')
+        print('Owner Preference Correlation')
+        print('-----------------------------------')
+        corr_df = owner_df.corrwith(seeker_df.T, axis=1)
+        print(corr_df.head())
         print('-----------------------------------')
 
     if save_to_file:
