@@ -1,44 +1,41 @@
 import pandas as pd
 
-def competitiveness(df):
+
+def competitiveness(df, A_df=pd.DataFrame()):
     '''
-    input: Pandas DataFrame with row index slate options, column headers deciders
+    input df: Pandas DataFrame with row index slate options, column headers deciders
             the entries are the preferences. Entry at row i, column j is the 
             preference ranking of decider j of slate option i
+    input A_df: Pandas DataFrame with columns 'Job'i (strings)  and 'Num_Positions' (integers) 
+            If only single assignment, don't pass.
     output: dictionary, keys are slate options, enteries are the competitiveness scores
     '''
     #weighted scaling competitiveness score
     comp_dict = {}
-    n_jobs = 10
-    n_seekers = len(df)
+    single = A_df.empty
+    if not single:
+        M = A_df['Num_Positions'].sum()
+    n,m = df.shape
     for index,row in df.iterrows():
-        mu = (row ** 0.5).mean()
-        #TODO: Read in A_df for 'a' value
-        a = 1
-        comp_dict[index] =  round(1 - mu/((a**0.5) * (n_seekers**0.5) * n_jobs),4)
+        if not single:
+            a_j = A_df.at[index, 'Num_Positions']
+            f = 1 - a_j / M
+        else: 
+            f = 1
+        s = 1 - (1/(n*m))*((row ** 0.5).sum())
+        comp_dict[index] =  round(f*s,4)
     return comp_dict
-    '''
-    Sciorintino competitiveness Score
 
-    comp_dict = {}
-    for index,row in df.iterrows():
-        mu = row.mean()
-        sigma = (((row - mu).apply(lambda x: max(x,0)))**2).sum()
-        comp_dict[index] = (mu * (len(row)**2))/(sigma)
-    return comp_dict
-    '''
+'''
+Sciorintino competitiveness Score
 
-def generalism(df):
-    '''
-    input: Pandas DataFrame with row index slate options, column headers deciders
-            the entries are the preferences. Entry at row i, column j is the 
-            preference ranking of decider j of slate option i
-    output: dictionary, keys are slate options, enteries are the competitiveness scores
-    '''
-    gen_dict = {}
-    for index,row in df.iterrows():
-        gen_dict[index] = row.var()
-    return gen_dict
+comp_dict = {}
+for index,row in df.iterrows():
+    mu = row.mean()
+    sigma = (((row - mu).apply(lambda x: max(x,0)))**2).sum()
+    comp_dict[index] = (mu * (len(row)**2))/(sigma)
+return comp_dict
+'''
 
 def similarity(df):
     '''
@@ -87,27 +84,51 @@ def pref_metrics(df):
             similarity of slate option j of slate option i
     '''
     comp_dict = competitiveness(df)
-    gen_dict = generalism(df)
     spec_dict = specialization(df)
     metric_dict = {'Competitiveness': comp_dict, 
-                    'Generalism': gen_dict,
                     'Specialization': spec_dict}
     metric_df = pd.DataFrame.from_dict(metric_dict)
     sim_df = similarity(df) 
     return metric_df, sim_df
 
 def main():
+    print_to_screen = True
+    save_to_file = False
+
     seeker_df = pd.read_csv('Data/seeker_prefs.csv', header=0, index_col=0)
     metric_df, sim_df = pref_metrics(seeker_df)
 
-    metric_df.to_csv('Data/job_metrics.csv', header=True, index=True)
-    sim_df.to_csv('Data/seeker_similarity.csv', header=True, index=True)
+    if print_to_screen:
+        print('-----------------------------------')
+        print('Job Metrics')
+        print('-----------------------------------')
+        print(metric_df.head())
+        print('-----------------------------------')
+        print('Seeker Similarity')
+        print('-----------------------------------')
+        print(sim_df.head())
+        print('-----------------------------------')
+
+    if save_to_file:
+        metric_df.to_csv('Data/job_metrics.csv', header=True, index=True)
+        sim_df.to_csv('Data/seeker_similarity.csv', header=True, index=True)
 
     owner_df = pd.read_csv('Data/owner_prefs.csv', header=0, index_col=0)
     metric_df, sim_df = pref_metrics(owner_df)
+    
+    if print_to_screen:
+        print('Seeker Metrics')
+        print('-----------------------------------')
+        print(metric_df.head())
+        print('-----------------------------------')
+        print('Job Similarity')
+        print('-----------------------------------')
+        print(sim_df.head())
+        print('-----------------------------------')
 
-    metric_df.to_csv('Data/seeker_metrics.csv', header=True, index=True)
-    sim_df.to_csv('Data/job_similarity.csv', header=True, index=True)
+    if save_to_file:
+        metric_df.to_csv('Data/seeker_metrics.csv', header=True, index=True)
+        sim_df.to_csv('Data/job_similarity.csv', header=True, index=True)
 
 if __name__ == '__main__':
     main()
