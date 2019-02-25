@@ -58,6 +58,7 @@ def similarity(df):
                 s = 1 - sim_coeff * ((nn_d - (df[i] + df[j])) * ((df[i] - df[j])**2)).sum()
                 sim_df[i][j] = s
                 sim_df[j][i] = s
+    sim_df = sim_df.round(4)
     return sim_df
 
 def specialization(df):
