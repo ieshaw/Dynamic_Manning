@@ -3,6 +3,35 @@ import numpy as np
 import pandas as pd
 import sys
 
+def check_inputs(S_df, O_df, A_df):
+    '''
+    input S_df: Pandas DataFrame with row index job, column headers sailors
+            the entries are the preferences. Entry at row i, column j is the 
+            preference ranking of sailor j of job i
+    input O_df: Pandas DataFrame with row index sailors, column headers jobs
+            the entries are the preferences. Entry at row i, column j is the 
+            preference ranking of owner j of sailor i
+    input A_df: Pandas DataFrame with columns 'Job'i (strings)  and 'Num_Positions' (integers) 
+    output X_df: Pandas DataFrame with row index job, column headers sailors
+            the entries are the job placements. Entry at row i, column j is 
+            1 is sailor j has job i, 0 otherwise
+    '''
+    m_s = S_df.shape[0] 
+    n_s = S_df.shape[1]
+    m_o = O_df.shape[1] 
+    n_o = O_df.shape[0]
+    m_a = A_df.shape[0] 
+    t_a = A_df.shape[1]
+    if m_s != m_o or n_s != n_o:
+        raise ValueError('''
+                        S_df has dimensions ({}x{}) and O_df has dimensions ({}x{}) \n 
+                        S_df and O_df.T should have the same dimensions
+                        '''.format(m_s,n_s,n_o,m_o))
+    if m_a != m_s or t_a != 1:
+        raise ValueError('''
+                        A_df has dimensions ({}x{}) but should have dimensions ({}x1)
+                        '''.format(m_a,t_a,n_s))
+
 def opt(S_df, O_df, A_df):
     '''
     input S_df: Pandas DataFrame with row index job, column headers sailors
@@ -16,36 +45,60 @@ def opt(S_df, O_df, A_df):
             the entries are the job placements. Entry at row i, column j is 
             1 is sailor j has job i, 0 otherwise
     '''
+    check_inputs(S_df, O_df, A_df)
     # Infer all the terms of the optimization funciton
     P_S = S_df.values
     P_O = O_df.values
     A = A_df.values
     m = S_df.shape[0] 
     n = S_df.shape[1]
-    k = max(n,m)
-    X = cp.Variable((n,m), boolean=True)
-    f = 2 *cp.trace(cp.matmul(X.T,P_O)) + cp.trace(cp.matmul(X,P_S))
-    H = cp.Variable((m,m))
+    m_a = A_df.sum().sum()
+    k = min(n,m_a)
+    X = cp.Variable((m,n), boolean=True)
+    f = 2 *cp.trace(cp.matmul(X,P_O)) + cp.trace(cp.matmul(X.T,P_S))
     obj = cp.Problem(cp.Minimize(f),
             [cp.atoms.affine.reshape.reshape(cp.sum(X,axis=1),(m,1)) <= A,
-                cp.sum(X) == k] )
+                cp.sum(X) <= k + 0.5, cp.sum(X) >= k - 0.5] )
+    #mip_solvers for cvxpy [CBC, GLPK_MI, CPLEX, ECOS_BB, GUROBI]
     obj.solve(solver=cp.ECOS_BB)
-    X_df = pd.DataFrame(X.value, index=S_df.index, columns=S_df.columns)
-    X_df = X_df.round()
-    #Get Rid of Negativs
-    X_df = X_df ** 2
-    X_df = X_df.astype(int)
+    status = obj.status
+    if status in ['optimal', 'optimal_inaccurate']:
+        X_df = pd.DataFrame(X.value, index=S_df.index, columns=S_df.columns)
+        X_df.fillna(0,inplace=True)
+        X_df = X_df.round()
+        #Get Rid of Negativs
+        X_df = X_df ** 2
+        X_df = X_df.astype(int)
+        print('''
+                Solution status: {}
+                Num om Assignments given: {}
+                Num of Assigments expected: {}
+                '''.format(obj.status,X_df.sum().sum(),k))
+    else:
+        raise ValueError('''
+                        Problem considered {}.
+                        '''.format(status))
     return X_df
 
-def main():
-    if len(sys.argv) != 2:
-        raise ValueError('One argument needed. Data Directory.')
-    data_dir = sys.argv[1]
+def sim_data():
+    data_dir = 'test_data'
     S_df = pd.read_csv(data_dir + '/S.csv', index_col=0)  
     O_df = pd.read_csv(data_dir + '/O.csv', index_col=0)  
     A_df = pd.read_csv(data_dir + '/A.csv', index_col=0)  
     X_df = opt(S_df, O_df, A_df)
     X_df.to_csv(data_dir + '/X.csv', header=True, index=True)
+
+def doc_data():
+    data_dir = 'test_data/med/med_' 
+    S_df = pd.read_csv(data_dir + 'S.csv', index_col=0)  
+    O_df = pd.read_csv(data_dir + 'O.csv', index_col=0)  
+    A_df = pd.read_csv(data_dir + 'A.csv', index_col=0)  
+    X_df = opt(S_df, O_df, A_df)
+    X_df.to_csv(data_dir + 'X.csv', header=True, index=True)
+
+def main():
+    doc_data()
+    #sim_data()
 
 if __name__ == '__main__':
     main()
