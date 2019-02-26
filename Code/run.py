@@ -1,9 +1,73 @@
 import os
+import json
+import os
 import pandas as pd
 import sys
 from da import da
 from opt import check_inputs, opt
+from post_match import gap_metric, top_perc
 from pref_metrics import pref_metrics, correlation
+
+'''
+When this script runs, you will point it to a directory with 3 csv's
+    
+    S.csv, O.csv, A.csv
+
+    S.csv: columns seeker names, rows jobs names,
+            entries ordinal preferences of seekers for jobs
+
+    O.csv: columns job names, rows seeker names,
+            entries ordinal preferences of jobs for seekers
+
+    A.csv: columns 'Job' and 'Num_Positions', 
+            indicating how many positions available at each job
+
+After running this script the input directory will have a sub directory
+
+    results/
+
+In this sub directory there will be several files
+
+    Metrics_s.csv, Metrics_o.csv, Similarity_o.csv, Similarity_s.csv
+    Corr_s.csv, Corr_o.csv, X_mip.csv, X_da_s.csv, X_da_o.csv, 
+    post_match_json.
+
+    Metrics_s.csv: columns 'Competitiveness' and 'Specialization'
+            rows are seeker names
+
+    Metrics_o.csv: columns 'Competitiveness' and 'Specialization'
+            rows are job names
+
+    Similarity_s.csv: rows and columns are seeker names
+            entries are their similarity, diagonal are 1's
+
+    Similarity_o.csv: rows and columns are job names
+            entries are their similarity, diagonal are 1's
+
+    Corr_s.csv: rows are seeker names, values are correlation
+            of a seeker's preferences with the preferences expressed
+            for them by jobs
+
+    Corr_o.csv: rows are job names, values are correlation
+            of a job's preferences with the preferences expressed
+            for them by seekers
+
+    X_mip.csv: columns seeker names, rows jobs names,
+            assignments by MIP
+            1 indicates assinment, 0 otherwise
+
+    X_da_s.csv: columns seeker names, rows jobs names,
+            assignments by Deferred Acceptance, seeker optimal
+            1 indicates assinment, 0 otherwise
+
+    X_da_o.csv: columns seeker names, rows jobs names,
+            assignments by Deferred Acceptance, job optimal
+            1 indicates assinment, 0 otherwise
+
+    post_match.json: Post match metrics in nested dictionaries
+            the gap_mu and top 1/5/10 counts and ratios
+            for each assignment process and side of market
+'''
 
 def main():
     if len(sys.argv) != 2:
@@ -41,6 +105,19 @@ def main():
     X_da_s.to_csv(output_dir + 'X_da_s.csv', header=True, index=True)
     X_da_o = da(S_df, O_df, A_df, optimal='o')
     X_da_o.to_csv(output_dir + 'X_da_o.csv', header=True, index=True)
+    rank_list=[1,5,10]
+    x_dict = {'mip': X_mip, 'da_s': X_da_s, 'da_o': X_da_o}
+    p_dict = {'s': S_df, 'o': O_df}
+    gap_dict = {}
+    top_dict = {}
+    for x in x_dict:
+        gap_dict[x] = gap_metric(S_df, O_df, x_dict[x])
+        top_dict[x] = {}
+        for p in p_dict:
+            top_dict[x]['top_{}'.format(p)] = top_perc(p_dict[p], p, x_dict[x], rank_list)
+    out_dict = {'gap_mu' : gap_dict, 'top' : top_dict}
+    with open(output_dir + 'post_match.json', 'w') as fp:
+            json.dump(out_dict, fp)
 
 if __name__ == '__main__':
     main()

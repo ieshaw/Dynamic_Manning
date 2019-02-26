@@ -3,6 +3,26 @@ import os
 import pandas as pd
 import sys
 
+def gap_metric(S_df, O_df, X_df):
+    '''
+    input S_df: Pandas DataFrame, seeker preferences,  with row index slate options, column headers deciders
+            the entries are the preferences. Entry at row i, column j is the 
+            preference ranking of decider j of slate option i
+    input O_df: Pandas DataFrame, owner preferences, with row index slate options, column headers deciders
+            the entries are the preferences. Entry at row i, column j is the 
+            preference ranking of decider j of slate option i
+    input X_df: Pandas DataFrame with row index job, column headers sailors
+            the entries are the job placements. Entry at row i, column j is 
+            1 is sailor j has job i, 0 otherwise
+    output gap_mu: float, average difference of preference for assigment between
+            job seeker and job owner
+    '''
+    gap_df = (S_df * X_df) - (O_df.T * X_df)
+    m, n = X_df.shape
+    placements = m * n - X_df.sum().sum()
+    gap_mu = round(gap_df.sum().sum() / placements, 4)
+    return gap_mu
+
 def top_perc(S_df, p_type, X_df, rank_list=[1,5,10]):
     '''
     input S_df: Pandas DataFrame with row index slate options, column headers deciders
@@ -31,7 +51,6 @@ def top_perc(S_df, p_type, X_df, rank_list=[1,5,10]):
                 i += 1
     return top_dict
 
-#TODO: Winner metric
 #TODO: Pareto Efficiency
 
 def main():
@@ -54,13 +73,17 @@ def main():
     O_df.index = O_df.index.map(str)
     A_df = pd.read_csv(data_dir + 'A.csv', index_col=0)  
     X_mip = pd.read_csv(output_dir + 'X_mip.csv', index_col=0)
-    out_dict = {}
     rank_list=[1,5,10]
     x_dict = {'mip': X_mip}
     p_dict = {'s': S_df, 'o': O_df}
+    gap_dict = {}
+    top_dict = {}
     for x in x_dict:
+        gap_dict[x] = gap_metric(S_df, O_df, x_dict[x])
         for p in p_dict:
-            out_dict['top_{}_{}'.format(x,p)] = top_perc(p_dict[p], p, x_dict[x], rank_list)
+            top_dict['top_{}_{}'.format(x,p)] = top_perc(p_dict[p], p, x_dict[x], rank_list)
+    out_dict = {'gap_mu' : gap_dict, 'top' : top_dict}
+    print(out_dict)
     with open(output_dir + 'post_match.json', 'w') as fp:
             json.dump(out_dict, fp)
 
