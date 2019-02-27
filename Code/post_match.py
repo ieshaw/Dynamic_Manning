@@ -1,4 +1,5 @@
 import json
+import math
 import os
 import pandas as pd
 import sys
@@ -23,7 +24,7 @@ def gap_metric(S_df, O_df, X_df):
     gap_mu = round(gap_df.sum().sum() / placements, 4)
     return gap_mu
 
-def top_perc(S_df, p_type, X_df, rank_list=[1,5,10]):
+def top_perc(S_df, p_type, X_df):
     '''
     input S_df: Pandas DataFrame with row index slate options, column headers deciders
             the entries are the preferences. Entry at row i, column j is the 
@@ -38,17 +39,39 @@ def top_perc(S_df, p_type, X_df, rank_list=[1,5,10]):
     '''
     if p_type == 'o':
         S_df = S_df.T
+    n_options, _ = S_df.shape
     top_dict = {}
     ranks = (X_df * S_df).stack().value_counts().sort_index()
+    rank_list = [1]
+    rank_list.extend([ 5 * i for i in range(1,math.ceil(float(n_options)/5) + 1)])
     divisor = float(ranks.sum() - ranks.iloc[0])
     cum_sum = 0
+    ranks.drop(index=0,inplace=True)
+    print(rank_list)
+    print(ranks)
     i = 0
+    r = len(rank_list)
     for index,value in ranks.iteritems():
-        if index != 0:
-            cum_sum += value
-            if index == rank_list[i]:
-                top_dict[rank_list[i]] = (cum_sum, round(float(cum_sum)/divisor, 4))
+        if i < r:
+            curr_rank = rank_list[i]
+            rank_str = str(curr_rank) + '_' + p_type
+            if index > curr_rank:
+                top_dict[rank_str + '_count'] = cum_sum
+                top_dict[rank_str + '_ratio'] = round(float(cum_sum)/divisor, 4)
                 i += 1
+            elif index == curr_rank:
+                cum_sum += value
+                top_dict[rank_str + '_count'] = cum_sum
+                top_dict[rank_str + '_ratio'] = round(float(cum_sum)/divisor, 4)
+                i += 1
+            else:
+                cum_sum += value
+    #Finish out the rank list
+    for rank in rank_list:
+        if rank > curr_rank:
+            rank_str = str(rank) + '_' + p_type
+            top_dict[rank_str + '_count'] = cum_sum
+            top_dict[rank_str + '_ratio'] = round(float(cum_sum)/divisor, 4)
     return top_dict
 
 #TODO: Pareto Efficiency
@@ -73,19 +96,15 @@ def main():
     O_df.index = O_df.index.map(str)
     A_df = pd.read_csv(data_dir + 'A.csv', index_col=0)  
     X_mip = pd.read_csv(output_dir + 'X_mip.csv', index_col=0)
-    rank_list=[1,5,10]
     x_dict = {'mip': X_mip}
     p_dict = {'s': S_df, 'o': O_df}
-    gap_dict = {}
-    top_dict = {}
+    out_dict = {}
     for x in x_dict:
-        gap_dict[x] = gap_metric(S_df, O_df, x_dict[x])
+        out_dict[x] = {'gap_mu': gap_metric(S_df, O_df, x_dict[x])}
         for p in p_dict:
-            top_dict['top_{}_{}'.format(x,p)] = top_perc(p_dict[p], p, x_dict[x], rank_list)
-    out_dict = {'gap_mu' : gap_dict, 'top' : top_dict}
-    print(out_dict)
-    with open(output_dir + 'post_match.json', 'w') as fp:
-            json.dump(out_dict, fp)
+            out_dict[x].update(top_perc(p_dict[p], p, x_dict[x]))
+    out_df = pd.DataFrame.from_dict(out_dict)
+    print(out_df)
 
 if __name__ == '__main__':
     main()

@@ -30,7 +30,7 @@ In this sub directory there will be several files
 
     Metrics_s.csv, Metrics_o.csv, Similarity_o.csv, Similarity_s.csv
     Corr_s.csv, Corr_o.csv, X_mip.csv, X_da_s.csv, X_da_o.csv, 
-    post_match_json.
+    post_match.csv
 
     Metrics_s.csv: columns 'Competitiveness' and 'Specialization'
             rows are seeker names
@@ -64,10 +64,10 @@ In this sub directory there will be several files
             assignments by Deferred Acceptance, job optimal
             1 indicates assinment, 0 otherwise
 
-    post_match.json: Post match metrics in nested dictionaries
-            the gap_mu and top 1/5/10 counts and ratios
-            for each assignment process and side of market
-'''
+    post_match.csv: rows metrics, columns matching algorithms
+            metrics are the gap_mu and top 1/5/10 counts and ratios
+            matching algos are mip, da_s, da_o
+    '''
 
 def main():
     if len(sys.argv) != 2:
@@ -105,19 +105,17 @@ def main():
     X_da_s.to_csv(output_dir + 'X_da_s.csv', header=True, index=True)
     X_da_o = da(S_df, O_df, A_df, optimal='o')
     X_da_o.to_csv(output_dir + 'X_da_o.csv', header=True, index=True)
-    rank_list=[1,5,10]
     x_dict = {'mip': X_mip, 'da_s': X_da_s, 'da_o': X_da_o}
     p_dict = {'s': S_df, 'o': O_df}
-    gap_dict = {}
-    top_dict = {}
+    out_dict = {}
     for x in x_dict:
-        gap_dict[x] = gap_metric(S_df, O_df, x_dict[x])
-        top_dict[x] = {}
+        print('Matching type: {}'.format(x))
+        out_dict[x] = {'gap_mu': gap_metric(S_df, O_df, x_dict[x])}
         for p in p_dict:
-            top_dict[x]['top_{}'.format(p)] = top_perc(p_dict[p], p, x_dict[x], rank_list)
-    out_dict = {'gap_mu' : gap_dict, 'top' : top_dict}
-    with open(output_dir + 'post_match.json', 'w') as fp:
-            json.dump(out_dict, fp)
+            out_dict[x].update(top_perc(p_dict[p], p, x_dict[x]))
+    out_df = pd.DataFrame.from_dict(out_dict)
+    print(out_df)
+    out_df.to_csv(output_dir + 'post_match.csv', header=True, index=True)
 
 if __name__ == '__main__':
     main()
