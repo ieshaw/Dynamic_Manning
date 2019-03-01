@@ -112,7 +112,7 @@ def main():
         print('Matching type: {}'.format(x))
         out_dict[x] = {'gap_mu': gap_metric(S_df, O_df, x_dict[x])}
         for p in p_dict:
-            out_dict[x].update(top_perc(p_dict[p], p, x_dict[x]))
+            out_dict[x].update(top_perc(p_dict[p], p, x_dict[x], A_df))
     out_df = pd.DataFrame.from_dict(out_dict)
     print(out_df)
     out_df.to_csv(output_dir + 'post_match.csv', header=True, index=True)
