@@ -1,4 +1,9 @@
-import cvxpy as cp
+'''
+Thank you to the following repository
+
+https://github.com/daffidwilde/matching
+
+'''
 import matching
 import numpy as np
 import pandas as pd
@@ -23,19 +28,16 @@ def da(S_df, O_df, A_df, optimal='s'):
     X_df = pd.DataFrame(0, index=S_df.index, columns=S_df.columns)
     job_owners = gen_players(O_df, True, A_df)
     seekers = gen_players(S_df)
+    hr = matching.HospitalResident(suitors=seekers, reviewers=job_owners)
     if optimal == 's':
-        hr = matching.HospitalResident(suitors=seekers, reviewers=job_owners)
+        solved = hr.solve(optimal='suitor')
     elif optimal == 'o':
-        hr = matching.HospitalResident(suitors=job_owners, reviewers=seekers)
+        solved = hr.solve(optimal='reviewer')
     else:
         raise ValueError('optimal must be either s or o')
-    solved = hr.solve()
     for key,value in solved.items():
         for v in value:
-            if optimal == 's':
-                X_df.at[str(key),str(v)] = 1
-            else:
-                X_df.at[str(v),str(key)] = 1
+            X_df.at[str(key),str(v)] = 1
     return X_df
 
 def gen_players(player_df, capacity=False, capacity_df=None):
@@ -61,7 +63,7 @@ def gen_players(player_df, capacity=False, capacity_df=None):
             players.append(matching.Player(str(col), prefs))
     return players
 
-def main():
+def normal_main():
     if len(sys.argv) != 2:
         raise ValueError('One argument needed. Data Directory.')
     data_dir = sys.argv[1]
@@ -70,6 +72,9 @@ def main():
     A_df = pd.read_csv(data_dir + '/A.csv', index_col=0)  
     X_df = da(S_df, O_df, A_df, optimal='s')
     X_df.to_csv(data_dir + '/X.csv', header=True, index=True)
+
+def main():
+    normal_main()
 
 if __name__ == '__main__':
     main()

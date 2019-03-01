@@ -116,8 +116,12 @@ def main():
     O_df = pd.read_csv(data_dir + 'O.csv', index_col=0)  
     O_df.index = O_df.index.map(str)
     A_df = pd.read_csv(data_dir + 'A.csv', index_col=0)  
-    X_mip = pd.read_csv(output_dir + 'X_mip.csv', index_col=0)
-    x_dict = {'mip': X_mip}
+    matchings = ['mip', 'da_o', 'da_s']
+    x_dict = {}
+    for algo in matchings:
+        x_str = output_dir + 'X_{}.csv'.format(algo)
+        if os.path.exists(x_str):
+            x_dict[algo] = pd.read_csv(x_str, index_col=0)
     p_dict = {'s': S_df, 'o': O_df}
     out_dict = {}
     for x in x_dict:
