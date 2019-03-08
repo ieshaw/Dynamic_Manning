@@ -3,8 +3,9 @@ import json
 import os
 import pandas as pd
 import sys
+from check import check_inputs, X_check 
 from da import da
-from opt import check_inputs, opt
+from mip import mip
 from post_match import gap_metric, top_perc
 from pref_metrics import pref_metrics, correlation
 
@@ -99,11 +100,17 @@ def main():
     corr_s.to_csv(output_dir + 'Corr_s.csv', header=True, index=True)
     corr_o = correlation(S_df,O_df)
     corr_o.to_csv(output_dir + 'Corr_o.csv', header=True, index=True)
-    X_mip = opt(S_df, O_df, A_df)
+    print('Matching MIP')
+    X_mip = mip(S_df, O_df, A_df)
+    X_check(X_mip, A_df)
     X_mip.to_csv(output_dir + 'X_mip.csv', header=True, index=True)
+    print('Matching DA Seeker Optimal')
     X_da_s = da(S_df, O_df, A_df, optimal='s')
+    X_check(X_da_s, A_df)
     X_da_s.to_csv(output_dir + 'X_da_s.csv', header=True, index=True)
+    print('Matching DA Job Owner Optimal')
     X_da_o = da(S_df, O_df, A_df, optimal='o')
+    X_check(X_da_o, A_df)
     X_da_o.to_csv(output_dir + 'X_da_o.csv', header=True, index=True)
     x_dict = {'mip': X_mip, 'da_s': X_da_s, 'da_o': X_da_o}
     p_dict = {'s': S_df, 'o': O_df}

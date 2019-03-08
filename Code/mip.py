@@ -4,7 +4,7 @@ import pandas as pd
 import sys
 from check import check_inputs
 
-def mip(S_df, O_df, A_df):
+def mip(S_df, O_df, A_df, print_to_screen=True):
     '''
     input S_df: Pandas DataFrame with row index job, column headers sailors
             the entries are the preferences. Entry at row i, column j is the 
@@ -41,11 +41,12 @@ def mip(S_df, O_df, A_df):
         #Get Rid of Negatives
         X_df = X_df ** 2
         X_df = X_df.astype(int)
-        print('''
-                Solution status: {}
-                Num om Assignments given: {}
-                Num of Assigments expected: {}
-                '''.format(obj.status,X_df.sum().sum(),k))
+        if print_to_screen:
+            print('''
+                    Solution status: {}
+                    Num om Assignments given: {}
+                    Num of Assigments expected: {}
+                    '''.format(obj.status,X_df.sum().sum(),k))
     else:
         raise ValueError('''
                         Problem considered {}.

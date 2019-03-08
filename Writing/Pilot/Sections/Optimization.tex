@@ -3,23 +3,33 @@ Alternate to deterministic algorithms (such as Deferred Acceptance \cite{1962_Ga
 The optimization function takes the form:
 
 \begin{align}
-\min \qquad & \sum_{i = 1}^{i=n} \sum_{j = 1}^{j=m} f(x_{i,j}) \\
-\text{ such that } \qquad & \sum_{j=1}^m x_{i,j} \leq 1 \quad  \forall i \in \{1, \dots n\} \label{one_job}\\
-& \sum_{i = 1}^{i=n} \sum_{j = 1}^{j=m}x_{i,j} = \min(n,m) \quad  \forall j \in \{1, \dots m\}  \label{all_filled}\\
-& \sum_{i=1}^n x_{i,j} \leq a_j \quad  \forall j \in \{1, \dots m\} \label{capacity} \\
+\min \qquad & \sum_{i = 1}^{i=n} \sum_{j = 1}^{j=m} f(X_{i,j}) \\
+\text{ such that } \qquad & \sum_{j=1}^m X_{i,j} \leq 1 \quad  \forall i \in \{1, \dots n\} \label{one_job}\\
+& \sum_{i = 1}^{i=n} \sum_{j = 1}^{j=m}X_{i,j} = \min(n,m) \quad  \forall j \in \{1, \dots m\}  \label{all_filled}\\
+& \sum_{i=1}^n X_{i,j} \leq a_j \quad  \forall j \in \{1, \dots m\} \label{capacity} \\
 \end{align}
 
 The Goodness Function $f$ is the strategic objective function of the assignment process. For the sake of this paper, we set it to value the preference of the seeker twice as much as the preference of th job owner.
 
-\[f(x_{i,j}) = 2P^S_{i,j} + P^O_{j,i}\]
+\[f(X_{i,j}) = X_{ij}(2P^S_{i,j} + P^O_{j,i})\]
 
 In matrix form this can be re-written (with $tr()$ indicating the trace):
 
 \begin{align}
-\min \qquad & tr(2X^TP^O) + tr(XP^S) \\
-\text{ such that } \qquad & \sum_{j=1}^m x_{i,j} \leq 1 \quad  \forall i \in \{1, \dots n\}  \label{one_job_matrix}\\
+\min \qquad & 2tr(XP^O) + tr(X^TP^S) \\
+\text{ such that } \qquad & \sum_{j=1}^m X_{i,j} \leq 1 \quad  \forall i \in \{1, \dots n\}  \label{one_job_matrix}\\
 & (X \bullet 1)\bullet 1 = \min(n,m) \quad  \forall j \in \{1, \dots m\} \label{all_filled_matrix}\\
 & X^T \bullet 1 \leq A \label{capacity_matrix} \\
 \end{align}
 
 The constraints in lines (\ref{one_job}) and (\ref{one_job_matrix}) ensure that each seeker receives only one job, lines (\ref{all_filled}) and (\ref{all_filled_matrix}) ensure that either all the jobs are filled or everyone has a job, and lines (\ref{capacity}) and (\ref{capacity_matrix}) ensures that all jobs are at or below capacity (do not exceed capacity).
+
+\subsection{Matrix formulation of Objective Function}
+
+\begin{align*}
+\sum_{i = 1}^{i=n} \sum_{j = 1}^{j=m} f(X_{i,j}) &= \sum_{i = 1}^{i=n} \sum_{j = 1}^{j=m} X_{ij}(2P^S_{i,j} + P^O_{j,i})\\
+&= \sum_{i = 1}^{i=n} \sum_{j = 1}^{j=m} 2X_{ij}P^S_{i,j} + \sum_{i = 1}^{i=n} \sum_{j = 1}^{j=m} X_{ij}P^O_{j,i} \\
+&= \sum_{i = 1}^{i=n} \sum_{j = 1}^{j=m} 2X_{ij}P^S_{i,j} + \sum_{j = 1}^{j=m}\sum_{i = 1}^{i=n} X^T_{ji}P^O_{j,i} \\
+&= \sum_{i = 1}^{i=n} 2(XP^S)_{ii} + \sum_{j = 1}^{j=m}(X^TP^O)_{jj}\\
+&= 2tr(XP^O) + tr(X^TP^S)
+\end{align*}
