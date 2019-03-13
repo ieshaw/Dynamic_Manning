@@ -6,7 +6,7 @@ import sys
 from check import check_inputs, X_check 
 from da import da
 from mip import mip
-from post_match import gap_metric, top_perc
+from post_match import mu_metrics, top_perc
 from pref_metrics import pref_metrics, correlation
 
 '''
@@ -88,7 +88,7 @@ def main():
     S_df.index = S_df.index.map(str)
     O_df = pd.read_csv(data_dir + 'O.csv', index_col=0)  
     O_df.index = O_df.index.map(str)
-    A_df = pd.read_csv(data_dir + 'A.csv', index_col=0)  
+    A_df = pd.read_csv(data_dir + 'A.csv', index_col=0, names=['Job','Num_Positions'],skiprows=1)
     check_inputs(S_df, O_df, A_df)
     metrics_s, sim_o = pref_metrics(O_df)
     metrics_s.to_csv(output_dir + 'Metrics_s.csv', header=True, index=True)
@@ -117,7 +117,8 @@ def main():
     out_dict = {}
     for x in x_dict:
         print('Matching type: {}'.format(x))
-        out_dict[x] = {'gap_mu': gap_metric(S_df, O_df, x_dict[x])}
+        mu_s, mu_o = mu_metrics(S_df, O_df, x_dict[x])
+        out_dict[x] = {'mu_s': mu_s, 'mu_o': mu_o, 'mu_combined': round(mu_s + mu_o,4),'gap_mu': round(mu_s - mu_o,4)}
         for p in p_dict:
             out_dict[x].update(top_perc(p_dict[p], p, x_dict[x], A_df))
     out_df = pd.DataFrame.from_dict(out_dict)

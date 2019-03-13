@@ -25,14 +25,13 @@ def mip(S_df, O_df, A_df, print_to_screen=True):
     m_a = A_df.sum().sum()
     k = min(n,m_a)
     X = cp.Variable((m,n), boolean=True)
-    f = cp.trace(cp.matmul(P_O,X)) + cp.trace(cp.matmul(X.T,P_S))
-    #f = cp.sum(cp.multiply(X.T, P_O),cp.multiply(X,P_S))
-    #f = 2 *cp.trace(cp.matmul(X,P_O)) + cp.trace(cp.matmul(X.T,P_S))
+    f = cp.trace(cp.matmul(X, (P_S.T + P_O)))
     obj = cp.Problem(cp.Minimize(f),
             [cp.atoms.affine.reshape.reshape(cp.sum(X,axis=1),(m,1)) <= A,
+                cp.atoms.affine.reshape.reshape(cp.sum(X,axis=0),(1,n)) <= 1,
                 cp.sum(X) <= k + 0.5, cp.sum(X) >= k - 0.5] )
     #mip_solvers for cvxpy [CBC, GLPK_MI, CPLEX, ECOS_BB, GUROBI]
-    obj.solve(solver=cp.ECOS_BB)
+    obj.solve(solver=cp.ECOS_BB, verbose=False, mi_max_iters=1000)
     status = obj.status
     if status in ['optimal', 'optimal_inaccurate']:
         X_df = pd.DataFrame(X.value, index=S_df.index, columns=S_df.columns)
@@ -43,10 +42,12 @@ def mip(S_df, O_df, A_df, print_to_screen=True):
         X_df = X_df.astype(int)
         if print_to_screen:
             print('''
+                    Time to Solve MIP: {}
+                    Obj value: {}
                     Solution status: {}
                     Num om Assignments given: {}
                     Num of Assigments expected: {}
-                    '''.format(obj.status,X_df.sum().sum(),k))
+                    '''.format(obj.solver_stats.solve_time, obj.value,obj.status,X_df.sum().sum(),k))
     else:
         raise ValueError('''
                         Problem considered {}.

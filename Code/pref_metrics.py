@@ -85,7 +85,7 @@ def correlation(df1, df2):
             is first and owner df second, the correlation is the correlation of 
             the ranks the seekers have for themselves with how the owners rank them. 
     '''
-    return df1.corrwith(df2.T, axis=0)
+    return df1.corrwith(pd.DataFrame(df2.values.T, index=df2.columns, columns=df2.index), axis=0)
 
 def pref_metrics(df):
     '''
