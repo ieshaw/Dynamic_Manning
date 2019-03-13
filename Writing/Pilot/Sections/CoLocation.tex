@@ -5,7 +5,7 @@ The optimization function takes the form:
 \begin{align}
 \min \qquad & \sum_{i = 1}^{i=n} \sum_{j = 1}^{j=m} f(x_{i,j}) \\
 \text{ such that } \qquad & \sum_{j=1}^m x_{i,j} \leq 1 \quad  \forall i \in \{1, \dots n\} \quad \texttt{only one job per person} \\
-& \sum_{i = 1}^{i=n} \sum_{j = 1}^{j=m}x_{i,j} == \min(n,m) \quad  \forall j \in \{1, \dots m\} \\& \quad \texttt{either all the jobs are filled or everyone has a job} \\
+& \sum_{i = 1}^{i=n} \sum_{j = 1}^{j=m}x_{i,j} == \min \left(n,\sum_{j = 1}^{m}a_j \right) \quad  \forall j \in \{1, \dots m\} \\& \quad \texttt{either all the jobs are filled or everyone has a job} \\
 & \sum_{i=1}^n x_{i,j} \leq a_j \quad  \forall j \in \{1, \dots m\} \quad \texttt{all jobs are at or below capacity} \\
 & \frac{1}{n_c} \sum_{i=1}^{n_e} C(e_1, e_2) \geq 0.95 \quad \texttt{at least 95\% of couples are co-located}
 \end{align}

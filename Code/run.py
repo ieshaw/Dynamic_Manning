@@ -3,9 +3,10 @@ import json
 import os
 import pandas as pd
 import sys
+from check import check_inputs, X_check 
 from da import da
-from opt import check_inputs, opt
-from post_match import gap_metric, top_perc
+from mip import mip
+from post_match import mu_metrics, top_perc
 from pref_metrics import pref_metrics, correlation
 
 '''
@@ -87,7 +88,7 @@ def main():
     S_df.index = S_df.index.map(str)
     O_df = pd.read_csv(data_dir + 'O.csv', index_col=0)  
     O_df.index = O_df.index.map(str)
-    A_df = pd.read_csv(data_dir + 'A.csv', index_col=0)  
+    A_df = pd.read_csv(data_dir + 'A.csv', index_col=0, names=['Job','Num_Positions'],skiprows=1)
     check_inputs(S_df, O_df, A_df)
     metrics_s, sim_o = pref_metrics(O_df)
     metrics_s.to_csv(output_dir + 'Metrics_s.csv', header=True, index=True)
@@ -99,18 +100,25 @@ def main():
     corr_s.to_csv(output_dir + 'Corr_s.csv', header=True, index=True)
     corr_o = correlation(S_df,O_df)
     corr_o.to_csv(output_dir + 'Corr_o.csv', header=True, index=True)
-    X_mip = opt(S_df, O_df, A_df)
+    print('Matching MIP')
+    X_mip = mip(S_df, O_df, A_df)
+    X_check(X_mip, A_df)
     X_mip.to_csv(output_dir + 'X_mip.csv', header=True, index=True)
+    print('Matching DA Seeker Optimal')
     X_da_s = da(S_df, O_df, A_df, optimal='s')
+    X_check(X_da_s, A_df)
     X_da_s.to_csv(output_dir + 'X_da_s.csv', header=True, index=True)
+    print('Matching DA Job Owner Optimal')
     X_da_o = da(S_df, O_df, A_df, optimal='o')
+    X_check(X_da_o, A_df)
     X_da_o.to_csv(output_dir + 'X_da_o.csv', header=True, index=True)
     x_dict = {'mip': X_mip, 'da_s': X_da_s, 'da_o': X_da_o}
     p_dict = {'s': S_df, 'o': O_df}
     out_dict = {}
     for x in x_dict:
         print('Matching type: {}'.format(x))
-        out_dict[x] = {'gap_mu': gap_metric(S_df, O_df, x_dict[x])}
+        mu_s, mu_o = mu_metrics(S_df, O_df, x_dict[x])
+        out_dict[x] = {'mu_s': mu_s, 'mu_o': mu_o, 'mu_combined': round(mu_s + mu_o,4),'gap_mu': round(mu_s - mu_o,4)}
         for p in p_dict:
             out_dict[x].update(top_perc(p_dict[p], p, x_dict[x], A_df))
     out_df = pd.DataFrame.from_dict(out_dict)
