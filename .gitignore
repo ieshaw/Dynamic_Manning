@@ -2,6 +2,7 @@
 .DS_Store
 dm/
 test_data/
+debug_data/
 
 # Latex Specific
 Output/
