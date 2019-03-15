@@ -18,6 +18,9 @@ def mu_metrics(S_df, O_df, X_df):
     output mu_s: float, average preference for job seeker
     output mu_o: float, average preference for job owner
     '''
+    S_df.sort_index(axis=0).sort_index(axis=1,inplace=True)
+    O_df.sort_index(axis=0).sort_index(axis=1,inplace=True)
+    X_df.sort_index(axis=0).sort_index(axis=1,inplace=True)
     placements = X_df.sum().sum()
     mu_s =round((S_df.values * X_df.values).sum().sum()/placements,4)
     mu_o = round((O_df.values.T * X_df.values).sum().sum()/placements,4)
@@ -37,6 +40,9 @@ def top_perc(S_df, p_type, X_df, A_df=pd.DataFrame()):
             If only single assignment, don't pass.
     output top_dict: dictionary, keys from rank_list, entries are tuples, (count, ratio) of those participants who were assigned that preference or higher
     '''
+    S_df.sort_index(axis=0).sort_index(axis=1,inplace=True)
+    X_df.sort_index(axis=0).sort_index(axis=1,inplace=True)
+    A_df.sort_index(inplace=True)
     n, m = X_df.shape
     n_options = n
     a_sum = m
