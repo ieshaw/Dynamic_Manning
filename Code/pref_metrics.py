@@ -68,12 +68,10 @@ def specialization(df):
             preference ranking of decider j of slate option i
     output: dictionary, keys are slate options, enteries are the competitiveness scores
     '''
-    spec_dict = {}
-    for index,row in df.iterrows():
-        mu = row.mean()
-        mn = row.min() 
-        spec_dict[index] = (mu - mn)/(mu + mn)
-    return spec_dict
+    spec = (df.kurtosis(axis=1) * df.skew(axis=1)) * -1
+    spec_norm = (spec - spec.min()) / (spec.max() - spec.min())
+        
+    return spec_norm.to_dict()
 
 def correlation(df1, df2):
     '''
