@@ -96,6 +96,7 @@ def pref_metrics(df):
             the entries are the similarities. Entry at row i, column j is the 
             similarity of slate option j of slate option i
     '''
+    df.sort_index(axis=0).sort_index(axis=1,inplace=True)
     comp_dict = competitiveness(df)
     spec_dict = specialization(df)
     metric_dict = {'Competitiveness': comp_dict, 

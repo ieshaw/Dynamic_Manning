@@ -18,6 +18,9 @@ def mip(S_df, O_df, A_df, print_to_screen=True):
             1 is sailor j has job i, 0 otherwise
     '''
     # Infer all the terms of the optimization funciton
+    S_df.sort_index(axis=0).sort_index(axis=1,inplace=True)
+    O_df.sort_index(axis=0).sort_index(axis=1,inplace=True)
+    A_df.sort_index()
     S_norm_df = (S_df-S_df.min())/(S_df.max()-S_df.min())
     O_norm_df = (O_df-O_df.min())/(O_df.max()-O_df.min())
     P_S = S_norm_df.pow(.5).values
