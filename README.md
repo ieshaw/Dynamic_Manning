@@ -7,8 +7,6 @@ Our effort is to develop a detailing marketplace to improve upon the Department 
 
 In essence, we take the job preferences of seekers (sailors) and match them to the preferences of job owners (commanders) in a minimization function such that the system will not find a more optimal placement.  That objective function is tempered by constraints of DoD policy and commander's intents, which are coded into the MIP algorithm and satisfied first. 
 
-Initially, we created a Gale-Shapley deferred acceptance algorithm, resembling those authors' work on matching markets.  Due to a need for constraints and modularity with consistent manipulations, we transitioned to linear programming, specifically a more agile mixed integer approach. 
-
-We have advanced the field by introducing mathematically implied preferences, a need expressed by Nobel Laureate Alvin Roth, and are pursuing quantitative publication of this prototype as well as the underlying advancement in implied preferences. 
+Initially, we created a Gale-Shapley deferred acceptance algorithm, resembling those authors' work on matching markets.  Due to a need for constraints and modularity with consistent manipulations, we transitioned to linear programming, specifically a more agile mixed integer approach.  
 
 The efforts here were executed completely open source and do not express the product or views of the US Government writ large, Department of Defense, or the Department of the Navy.
