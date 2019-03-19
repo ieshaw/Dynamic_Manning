@@ -1,5 +1,5 @@
 # Dynamic_Manning
-The Repository for the Dynamic Manning efforts of the LTJG team of the DoD.
+The Repository for the Dynamic Manning efforts of the Naval Algorithm team of the DoD.
 
 These are the prototypes of the ideas proporsed in our article ["Good Will Hunting: The Strategic Threat of Poor Talent Management"](https://warontherocks.com/2018/12/good-will-hunting-the-strategic-threat-of-poor-talent-management/). 
 
