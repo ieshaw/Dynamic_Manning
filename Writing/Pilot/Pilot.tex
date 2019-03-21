@@ -20,7 +20,7 @@
 %----------------------- Macros and Definitions --------------------------
 
 %%% FILL THIS OUT
-\newcommand{\projectname}{Algorithmic Dynamic Matching }
+\newcommand{\projectname}{Algorithmic Preference Matching in the Department of Defense}
 %%% END
 
 %\renewcommand{\theenumi}{\bf \Alph{enumi}}
@@ -42,12 +42,11 @@
 
 %-------------------------------- Title ----------------------------------
 
-\title{\projectname \\ \large Detailing Marketplace Pilot for US Navy}
-\author{Ian Shaw, LTJG, USN \thanks{E stuff} 
-\and Zac Dannelly, LTJG, USN \thanks{Z stuff}
-\and Drew Calcagno, LTJG, USN \thanks{X Stuff} 
-\and Richard Kuzma, LTJG, USN \thanks{Q Stuff} 
-\and Brian Yarborough, 1LT, USAF \thanks{Brian Stuff}}
+\title{\projectname}
+\author{Ian Shaw, LTJG, USN \thanks{Ian Shaw (Lieutenant JG, US Navy) is a cyber warfare engineer. As an alum of Stanford University, he researched sequential machine learning models at the Institute for Computational and Mathematical Engineering. He, and all authors of this piece, graduated with distinction from the US Naval Academy and together make up Naval Algorithms, the small prototype team described in the paper. } 
+\and Zac Dannelly, LTJG, USN \thanks{Zac Dannelly (Lieutenant JG, US Navy) is a cryptologic warfare officer serving at Fort Meade. He has researched the effects of emerging technologies on organizations through degrees from the Judge Business School at the University of Cambridge, on the Gates Scholarship, as well as from the Management Science and Engineering Department at Stanford University.}
+\and Drew Calcagno, LTJG, USN \thanks{Drew Calcagno (Lieutenant JG, US Navy) serves various teams in the Office of the Secretary of Defense. He writes emerging technology strategy there, particularly regarding artificial intelligence. He is an alum of the University of Oxford as a Rotary Scholar and the University of London as a Fulbright Scholar where he constructed theses on how the Department of Defense and the Intelligence Community could better coordinate counter-terrorism operations, particularly on the African continent.} 
+\and Richard Kuzma, LTJG, USN \thanks{Richard Kuzma (Lieutenant JG, US Navy) is a Navy surface warfare officer passionate about how the Defense Department adapts to emerging technologies, particularly artificial intelligence. He is an alum of the Harvard Kennedy School where he wrote a thesis on how the Defense Department should structurally change to implement artificial intelligence, partnering with the Defense Innovation Unit. He is an associate at Harvard’s Technology and Public Purpose Project. He is on Twitter, @rskuzma.}} 
 
 %--------------------------------- Text ----------------------------------
 
@@ -66,21 +65,23 @@
 
 \section{Introduction}
 
-\input{Sections/Intro.tex}
+\input{Sections/Introduction.tex}
 
-\subsection{Problem Description}
+\section{Problem Description}
 
 \input{Sections/Problem_Desc.tex}
 
-\section{Literature Review}
+\subsection{Solution Description}
 
-\input{Sections/Lit_Rev}
+\input{Sections/Solution_Description.tex}
 
-\section{Algorithm}
+\subsection{Algorithm}
 
 \input{Sections/Algo.tex}
 
 \subsection{Strategy Proofness}
+
+\input{Sections/Strategy_Proof.tex}
 
 \section{Metrics}
 
@@ -94,35 +95,41 @@
 
 \input{Sections/Specialization.tex}
 
-\subsection{Preference Correlation}
+%\subsection{Preference Correlation}
 
-\input{Sections/Pref_corr.tex}
+%\input{Sections/Pref_corr.tex}
 
 \subsubsection{Post-Match Metrics}
 
 \input{Sections/Post_Match_Metrics.tex}
 
-\section{Pilot}
+\section{Running the Prototype}
 
 \subsection{Overview}
 
 \input{Sections/Overview.tex}
 
-\subsection{Data}
+\subsection{Data Sources}
 
 \input{Sections/Data.tex}
 
 \subsection{Results}
 
+\subsubsection{Algorithm Results}
+
+\input{Sections/Algo_Results.tex}
+
+\subsubsection{Post-Match Metrics Results}
+
+\input{Sections/Pre_Match_Results.tex}
+
 \section{Alternate Formulations}
+
+\input{Sections/Alt_Formulations.tex}
 
 \subsection{Co-Location}
 
 \input{Sections/CoLocation.tex}
-
-\subsection{Tweaking Objective Function}
-
-\input{Sections/Tweak_Obj.tex}
 
 \subsection{Specialization Objective}
 

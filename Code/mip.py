@@ -21,10 +21,16 @@ def mip(S_df, O_df, A_df, print_to_screen=True):
     S_df.sort_index(axis=0).sort_index(axis=1,inplace=True)
     O_df.sort_index(axis=0).sort_index(axis=1,inplace=True)
     A_df.sort_index()
-    S_norm_df = (S_df-S_df.min())/(S_df.max()-S_df.min())
-    O_norm_df = (O_df-O_df.min())/(O_df.max()-O_df.min())
-    P_S = S_norm_df.pow(.5).values
-    P_O = O_norm_df.pow(.5).values
+    #S_norm_df = (S_df-S_df.min())/(S_df.max()-S_df.min())
+    #O_norm_df = (O_df-O_df.min())/(O_df.max()-O_df.min())
+    #P_S = S_norm_df.pow(0.5).values
+    #P_O = O_norm_df.pow(0.5).values
+    #P_S = S_norm_df.values
+    #P_O = O_norm_df.values
+    #P_S = S_df.pow(2).values
+    #P_O = O_df.pow(2).values
+    P_S = S_df.values
+    P_O = O_df.values
     A = A_df.values
     m,n = S_df.shape 
     m_a = A_df.sum().sum()
