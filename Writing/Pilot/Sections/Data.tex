@@ -1,17 +1,22 @@
-We ran our analysis on 5 data sources
+Our algorithm was run against five total data-sets. Ideally a single set of data would prove to be best, yet there were gaps or non-existence in each community we utilized. Two came from running a pilot and three came from other communities or branches of the DoD. 
 
-\begin{enumerate}
+\[\textit{Naval Cyber Officers}\]
 
-\item Med Corps
+The Navy has various types of service.  Some officers work with computers rather than operating aircraft or driving ships. We worked with one subset of cyber-oriented cryptologic warfare officers to attempt a bottom-to-top pilot of the matching algorithm.  That required an novel data collection effort because the previous method of matching sailors to jobs was completed non-optimally, largely based on who was available at the time. This dataset proved to be one of the most difficult to collect because there was no collection infrastructure or existing practice of doing so. 
 
-\item EOD
+\[\textit{Naval Explosive Ordinance Disposal Officers (EOD)}\]
 
-\item CMS-ID
+EOD officers are Naval expeditionary special forces who deal primarily with the handling, disarming, and disposing of explosive materials across the world. Given the specialization of their work, the small community’s leadership have expressed a desire for a matching mechanism to identify and manage its peoples’ talents.  Working closely with that leadership, our team was able to gather a large amount of preferences on either side of the marketplace (seekers and owners).  
 
-\item Air Force
+Tangentially, as evidenced by the near impossibility of obtaining data in the cyber community due to a lack of precedent, the EOD’s precedent extended to their funding a front end collection mechanism.  Later in this piece we will advise the Navy to combine our algorithmic back end to the EOD community’s budding front end to create a full stack system with phenomenal potential for scalability.  
 
-\item NSA
+\[\textit{Naval Doctors (Medical Corps)}\]
 
-\end{enumerate}
+The Navy has its own doctors. These doctors may go to civilian medical schools or the government’s own medical school (Uniformed Services University Hebert School of Medicine, or USUHS).  Additionally, they conduct their residencies at public or private hospitals.  As a result of that process, they are involved in the National Resident Matching Program, a foundational aspect of this paper. 
 
-We collected the EOD and NSA data. We were provided the Med Corps, CMS-ID, and Air Force data. In these three preferences were not expressed completely; not every market participant expressed their ordinal preference for each opportunity. To create complete preferences we use the process developed by Shaw \cite{2019_Shaw}.
+Their familiarity with the Gale-Shapley matching algorithm, used by the Navy as well as National Residency match in parallel processes, the culture of the medical corps is such that data is collected and a nearly identical process is run frequently.  As a result, our request for data from this community was met willingly and completely, offering a great opportunity to run clean data as well as provide our algorithm back to that excited customer most seamlessly. 
+
+
+\[\textit{Naval Enlisted Sailors (CMS-ID)}\]
+
+Our final data source was the Navy’s Career Management System Interactive Detailing (CMS-ID) system. This existing system is a means for enlisted sailors to share their preferences with detailers for their next assignments. Nevertheless, barriers to accurate and complete data remain.  Sailors do not always see all available jobs, and may only express a small subset of their overall desired selections. Additionally, there is no feedback from commanding officers on preferences of sailors. The value of this data set is its size.  The large $N$ validated our pre-match metrics and offered another proof-of-application utilizing an existing Navy collection system.

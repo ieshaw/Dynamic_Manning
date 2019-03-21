@@ -43,7 +43,7 @@ def X_check(X_df, A_df):
         raise ValueError('''
                     X_df incorrect. Only one job assignment per seeker.
                     ''')
-    if (X_df.sum(axis=1) > A_df['Num_Positions']).sum() > 0:
+    if (X_df.sum(axis=1) - A_df['Num_Positions']).sum() > 0:
         raise ValueError('''
                     X_df incorrect. At least one position over filled.
                     ''')
