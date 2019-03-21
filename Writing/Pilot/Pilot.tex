@@ -32,7 +32,7 @@
 \fancypagestyle{plain}{}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[LO,RE]{\sffamily\bfseries\large \projectname Project}
+\fancyhead[LO,RE]{\sffamily\bfseries\large \projectname}
 % \fancyfoot[LO,RE]{\sffamily\bfseries\large ianedwardshaw (at) gmail.com}
 \fancyfoot[RO,LE]{\sffamily\bfseries\thepage}
 \renewcommand{\headrulewidth}{1pt}
@@ -139,6 +139,10 @@
 
 \input{Sections/Future_Work.tex}
 
+\nocite{*}
+\bibliography{Sections/DM}
+\bibliographystyle{plain}
+
 \newpage
 
 \appendix
@@ -182,9 +186,6 @@
 % \input{Sections/Suggested_Ordering}
 
 
-\nocite{*}
-\bibliography{Sections/DM}
-\bibliographystyle{plain}
 
 \end{document}
 
