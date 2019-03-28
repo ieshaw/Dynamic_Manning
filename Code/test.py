@@ -5,7 +5,101 @@ import unittest
 from check import X_check
 from mip import mip
 from post_match import mu_metrics,top_perc
+from dynamic_manning import dynamic_manning as dm
 
+class Test_dm_initialization(unittest.TestCase):
+
+    def test_proper_load(self):
+        S_df = pd.DataFrame([[1,2],[2,1]], 
+                index=['F_1', 'F_2'], columns=['S_1', 'S_2'])
+        O_df = pd.DataFrame([[1,2],[2,1]], 
+                index=['S_1', 'S_2'], columns=['F_1', 'F_2'], )
+        A_df = pd.DataFrame([[1],[1]], 
+                index=['F_1', 'F_2'], columns=['Num_Positions'])
+        new_dm = dm(S_df,O_df,A_df)
+        diff_A_df = A_df - new_dm.A_df
+        self.assertEqual(0,diff_A_df.min().min())
+        self.assertEqual(0,diff_A_df.max().max())
+        diff_S_df = S_df - new_dm.S_df
+        self.assertEqual(0,diff_S_df.min().min())
+        self.assertEqual(0,diff_S_df.max().max())
+        diff_O_df = O_df - new_dm.O_df
+        self.assertEqual(0,diff_O_df.min().min())
+        self.assertEqual(0,diff_O_df.max().max())
+
+    def test_improper_S(self):
+        S_df = pd.DataFrame([[1,2]], 
+                index=['F_1'], columns=['S_1', 'S_2'])
+        O_df = pd.DataFrame([[1,2],[2,1]], 
+                index=['S_1', 'S_2'], columns=['F_1', 'F_2'], )
+        A_df = pd.DataFrame([[1],[1]], 
+                index=['F_1', 'F_2'], columns=['Num_Positions'])
+        with self.assertRaises(ValueError) as cm:
+            new_dm = dm(S_df,O_df,A_df)
+
+    def test_improper_O(self):
+        S_df = pd.DataFrame([[1,2],[2,1]], 
+                index=['F_1', 'F_2'], columns=['S_1', 'S_2'])
+        O_df = pd.DataFrame([[2,1]], 
+                index=['S_2'], columns=['F_1', 'F_2'], )
+        A_df = pd.DataFrame([[1],[1]], 
+                index=['F_1', 'F_2'], columns=['Num_Positions'])
+        with self.assertRaises(ValueError) as cm:
+            new_dm = dm(S_df,O_df,A_df)
+
+    def test_different_seekers_SO(self):
+        S_df = pd.DataFrame([[1,2],[2,1]], 
+                index=['F_1', 'F_2'], columns=['S_3', 'S_2'])
+        O_df = pd.DataFrame([[1,2],[2,1]], 
+                index=['S_1', 'S_2'], columns=['F_1', 'F_2'], )
+        A_df = pd.DataFrame([[1],[1]], 
+                index=['F_1', 'F_2'], columns=['Num_Positions'])
+        with self.assertRaises(ValueError) as cm:
+            new_dm = dm(S_df,O_df,A_df)
+
+    def test_different_jobs_SO(self):
+        S_df = pd.DataFrame([[1,2],[2,1]], 
+                index=['F_1', 'F_2'], columns=['S_1', 'S_2'])
+        O_df = pd.DataFrame([[1,2],[2,1]], 
+                index=['S_1', 'S_2'], columns=['F_3', 'F_2'], )
+        A_df = pd.DataFrame([[1],[1]], 
+                index=['F_1', 'F_2'], columns=['Num_Positions'])
+        with self.assertRaises(ValueError) as cm:
+            new_dm = dm(S_df,O_df,A_df)
+
+    def test_different_jobs_SA(self):
+        S_df = pd.DataFrame([[1,2],[2,1]], 
+                index=['F_1', 'F_2'], columns=['S_1', 'S_2'])
+        O_df = pd.DataFrame([[1,2],[2,1]], 
+                index=['S_1', 'S_2'], columns=['F_1', 'F_2'], )
+        A_df = pd.DataFrame([[1],[1]], 
+                index=['F_1', 'F_3'], columns=['Num_Positions'])
+        with self.assertRaises(ValueError) as cm:
+            new_dm = dm(S_df,O_df,A_df)
+
+    def test_no_A(self):
+        S_df = pd.DataFrame([[1,2],[2,1]], 
+                index=['F_1', 'F_2'], columns=['S_1', 'S_2'])
+        O_df = pd.DataFrame([[1,2],[2,1]], 
+                index=['S_1', 'S_2'], columns=['F_1', 'F_2'], )
+        A_df = pd.DataFrame([[1],[1]], 
+                index=['F_1', 'F_2'], columns=['Num_Positions'])
+        new_dm = dm(S_df,O_df)
+        diff_A_df = A_df - new_dm.A_df
+        self.assertEqual(0,diff_A_df.min().min())
+        self.assertEqual(0,diff_A_df.max().max())
+
+    def test_improper_A(self):
+        S_df = pd.DataFrame([[1,2],[2,1]], 
+                index=['F_1', 'F_2'], columns=['S_1', 'S_2'])
+        O_df = pd.DataFrame([[1,2],[2,1]], 
+                index=['S_1', 'S_2'], columns=['F_1', 'F_2'], )
+        A_df = pd.DataFrame([[1]], 
+                index=['F_1'], columns=['Num_Positions'])
+        with self.assertRaises(ValueError) as cm:
+            new_dm = dm(S_df,O_df,A_df)
+
+'''
 class Test_MIP(unittest.TestCase):
 
     def test_two_by_two_easy(self):
@@ -185,3 +279,7 @@ class Test_Post_Match(unittest.TestCase):
         mu_s,mu_o = mu_metrics(self.S_df,self.O_df,self.X_df)
         self.assertEqual(mu_s,round(float(16)/float(6),4))
         self.assertEqual(mu_o,round(float(21)/float(6),4))
+'''
+
+if __name__ == '__main__':
+    unittest.main()
