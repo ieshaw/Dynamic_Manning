@@ -1,0 +1,42 @@
+In matrix form this can be re-written (with $tr()$ indicating the trace):
+
+\begin{align}
+\min \qquad & tr(XP^O) + tr(X^TP^S) \label{mat_obj_func} \\
+\text{ such that } \qquad & X^T \times 1^{m \times 1}  \leq 1  \label{one_job_matrix}\\
+& (X \bullet 1)\bullet 1 = \min(n,A \bullet 1^{m \times 1}) \label{all_filled_matrix}\\
+& X \times 1^{n \times 1} \leq A \label{capacity_matrix} \\
+& \sum \sum X \bullet\mathbf{1}(X \bullet P^S \leq w) \geq \sum \sum X \bullet\mathbf{1}(X^{DA} \bullet P^S \leq w) \quad \forall w \in \{1,5,10\} \\ \label{mat_s_da}
+& \sum \sum X \bullet\mathbf{1}(X \bullet (P^O)^T \leq w) \geq \sum \sum X \bullet\mathbf{1}(X^{DA} \bullet (P^O)^T \leq w) \quad \forall w \in \{1,5,10\} \\ \label{mat_o_da}
+\end{align}
+
+The proof for the equivalence of the objective functions (\ref{obj_func}) and (\ref{mat_obj_func}) is in Section \ref{mat_obj_func_proof}. The constraints in lines (\ref{one_job}) and (\ref{one_job_matrix}) ensure that each seeker receives only one job, lines (\ref{all_filled}) and (\ref{all_filled_matrix}) ensure that either all the jobs are filled or everyone has a job, lines (\ref{capacity}) and (\ref{capacity_matrix}) ensures that all jobs are at or below capacity (do not exceed capacity), and lines (\ref{s_da}, \ref{o_da}, \ref{mat_s_da}, \ref{mat_o_da}) ensure that our process is just as good or better in the post-match metrics of preference windows described in Section \ref{post-match}.
+
+\subsubsection{Matrix formulation of Objective Function}
+\label{mat_obj_func_proof}
+
+\begin{align}
+\sum_{i = 1}^{n} \sum_{j = 1}^{m} f(X_{ij}) &= \sum_{i = 1}^{n} \sum_{j = 1}^{m} X_{ji}\left(P^S_{ji} + P^O_{ij}\right)\\
+&=   \sum_{j = 1}^{m}\sum_{i = 1}^{n} X_{ji}\left(\left(P^S\right)^T_{ij} + P^O_{ij}\right)\\
+&=   \sum_{j = 1}^{m}\sum_{i = 1}^{n} X_{ji}\left(\left(P^S\right)^T + P^O\right)_{ij}\\
+&=   \sum_{j = 1}^{m} \left( X\left(\left(P^S\right)^T + P^O \right)\right)_{jj}\\
+&=   tr\left( X\left(\left(P^S\right)^T + P^O \right)\right)\\
+%&= \sum_{i = 1}^{n} \sum_{j = 1}^{m} X_{ji}P^S_{ji} + \sum_{i = 1}^{n} \sum_{j = 1}^{m} X_{ji}P^O_{ij} \\
+%&=  \sum_{i = 1}^{n} \sum_{j = 1}^{m} X^T_{ij}P^S_{ji} + \sum_{j = 1}^{m} \sum_{i = 1}^{n} X_{ji}P^O_{ij} \label{pre_jump}\\
+%&= \sum_{i = 1}^{n} (X^TP^S)_{ii} + \sum_{j = 1}^{m}(XP^O)_{jj} \label{post_jump}\\
+%&= tr(X^TP^S) + tr(XP^O)
+\end{align}
+
+\subsubsection{Formulation for CVXPY}
+
+The difficulty with the constraints in lines (\ref{s_da}, \ref{o_da}, \ref{mat_s_da}, \ref{mat_o_da}) is that CVXPY does not have an indicator or filter atomic function that can be used in the objective function. Thus in order to code this formulation with the CWVPY we reformulated using the functions $\max$, which is an atomic function in the CVXPY API.
+
+\begin{align}
+x &= X_{ij} \\
+p &= P^S_{ij} \\
+g &\in \{1,5,10\} \\
+\mathbf{1}(xp \leq g) &= \mathbf{1}(xp - g \leq 0) \\
+&=  \mathbf{1}(\max(xp - g , 0) == 0) \\
+&=  \max(1 - \max(xp - g , 0), 0) \\
+\end{align}
+
+The jump to the last line is made possible by the fact that $xp$ and $g$ are positive integers.
