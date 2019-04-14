@@ -1,0 +1,21 @@
+There is precedent in the DoD to do assignments in a manner by which the distribution of quality officers is even across assignments. This happens in how US Navy submariners are assigned a boat after initial training and to US Marines when selecting their Marine Occupational Specialty (MOS). The purpose if this is to ensure that no one unit or community within the force falls behind in competency due to a preponderance of low-performing personnel. 
+
+To incorporate this into the matching algorithm would be easy. We would simply add this to the objective function of Appendix (\ref{Matching}).
+
+\[ f(X) = \gamma(P^S + P^O) + \lambda (\sigma^2(X)) \]
+
+The explanation of the objective function can be found in subsection \ref{quality_obj}.
+
+\subsection{Explanation of Objective Function}
+\label{quality_obj}
+
+\begin{align}
+f(X) &= \gamma(P^S + P^O) + \lambda (\sigma^2(X)) \\
+    \gamma, \lambda &= \texttt{weighting coefficient}, \in [0,1] \cap \mathbb{R} \\
+    \sigma^2(X) &= \texttt{Variance of the quality assignments} \\
+    \sigma^2(X) &= \frac{\sum_{j=1}^m (\mu^q_j - \bar{\mu^q})^2}{m-1} \\
+    \mu^q_j &= \texttt{Average Quality score of person assigned to position } j \\
+    \mu^q_j &= \sum_{i=1}^n  \frac{X_{ij} Q_i}{A_j} \\
+    \bar{\mu^q} &= \sum_{j=1}^m \frac{\mu^q_j}{m} \\
+    Q &= \texttt{Quality scores for each seeker }, \mathbb{R}^{n \times 1}
+\end{align}

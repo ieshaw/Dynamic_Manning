@@ -1,0 +1,40 @@
+Retention is often and important goal of military leaders wanting to maintain manpower numbers in order to keep the force ready for possible operations. The difficulty is, with an all volunteer force, if a service member is beyond contractual obligation, they need to be incentivized to stay in. For example, a sailor may be willing to stay in for another 3 years if they are guaranteed to stay in San Diego so that their child can finish out high school there, but if they are asked to move across the country they will opt to leave the service and seek local employment outside of the DoD. 
+
+For the purpose of controlling retention numbers, we can adapt the formulation from Appendix (\ref{Matching}). The objective function can now take the form below, if the goal is to maximize retention (minimization is just a sign change).
+
+\[ f(X) = \gamma(P^S + P^O) - \lambda (R(X)) \]
+The explanation of the objective function can be found in subsection \ref{retention_obj}.
+
+Also we can incorporate a retention constraint. Say a service leader were to desire retention above 90\%, then the following constraint would be necessary. 
+
+\[R(X) \geq \texttt{Desired retention rate between 0 and 1} \]
+
+Here $R(X)$ is the same as that in the objective function fomulation, defined at \ref{retention_func}.Keep in mind, there is maximum rate on retention that is not necessarily 100\%, see subsection \ref{max_retention} for a discussion on this. Furthermore, when employing this constrain, special care must be taken to guarantee feasibility.  
+
+We believe the implementation of either or both of these retention formulations to be strategy proof (indicatingn it is in the best interest of market participants to honestly express their ordinal preferences) so long as the output of $X$ is enforced. Yet, we have not explored the strategy proofness regorously and leave that investigation to futrue work.
+
+\subsection{Explanation of Objective Function}
+\label{retention_obj}
+
+\begin{align}
+f(X) &= \gamma(P^S + P^O) + \lambda (\sigma^2(X)) \\
+P^S_j &= \begin{cases}
+m + 1 &  \text{Would rather separate than accept assignment to } j \\
+[1,m] \cap \mathbb{Z}  &  \text{otherwise expressed preference} \\
+\end{cases} \\ 
+\gamma, \lambda &= \texttt{weighting coefficients}, \in [0,1] \cap \mathbb{R} \\
+R(X) &= \texttt{Retention rate of assignment set }X \\
+R(X) &= \frac{\sum_{i=1}^n \mathbf{1}\left(X\bullet P^S\right < m+1)}{n} \label{retention_func}\\
+\end{align}
+
+\subsection{Maximum Retention}
+\label{max_retention}
+
+The maximum retention rate given the constraints of the college admission formulation (defined in lines (\ref{one_job}, \ref{all_filled}, \ref{capacity}), is the value of the objective function for the program described below. Keep in mind these constraint must be feasible for this analysis to be worthwhile; this requires that there is at least one solution where there are is at least one job seeker willing to fill each position in the market.
+
+\begin{align}
+\max \qquad & R(X) \\
+\text{ such that } \qquad & \sum_{j=1}^m X_{i,j} \leq 1 \quad  \forall i \in \{1, \dots n\} \\
+& \sum_{i = 1}^{i=n} \sum_{j = 1}^{m}X_{ij} = \min \left(n,\sum_{j = 1}^{m}a_j \right) \quad  \forall j \in \{1, \dots m\}  \\
+& \sum_{i=1}^n X_{ij} \leq a_j \quad  \forall j \in \{1, \dots m\}  \\
+\end{align} 
