@@ -1,0 +1,237 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Author template for Management Science (mnsc) for articles with no e-companion (EC)
+%% Mirko Janc, Ph.D., INFORMS, mirko.janc@informs.org
+%% ver. 0.95, December 2010
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\documentclass[mnsc,blindrev]{informs3}
+\documentclass[mnsc,nonblindrev]{informs3} % current default for manuscript submission
+
+\OneAndAHalfSpacedXI
+%%\OneAndAHalfSpacedXII % Current default line spacing
+%%\DoubleSpacedXII
+%%\DoubleSpacedXI
+
+% If hyperref is used, dvi-to-ps driver of choice must be declared as
+%   an additional option to the \documentclass. For example
+%\documentclass[dvips,mnsc]{informs3}      % if dvips is used
+%\documentclass[dvipsone,mnsc]{informs3}   % if dvipsone is used, etc.
+
+% Private macros here (check that there is no clash with the style)
+
+% Natbib setup for author-year style
+\usepackage{natbib}
+ \bibpunct[, ]{(}{)}{,}{a}{}{,}%
+ \def\bibfont{\small}%
+ \def\bibsep{\smallskipamount}%
+ \def\bibhang{24pt}%
+ \def\newblock{\ }%
+ \def\BIBand{and}%
+
+%% Setup of theorem styles. Outcomment only one.
+%% Preferred default is the first option.
+\TheoremsNumberedThrough     % Preferred (Theorem 1, Lemma 1, Theorem 2)
+%\TheoremsNumberedByChapter  % (Theorem 1.1, Lema 1.1, Theorem 1.2)
+\ECRepeatTheorems
+
+%% Setup of the equation numbering system. Outcomment only one.
+%% Preferred default is the first option.
+\EquationsNumberedThrough    % Default: (1), (2), ...
+%\EquationsNumberedBySection % (1.1), (1.2), ...
+
+% For new submissions, leave this number blank.
+% For revisions, input the manuscript number assigned by the on-line
+% system along with a suffix ".Rx" where x is the revision number.
+\MANUSCRIPTNO{}
+
+%%%%%%%%%%%%%%%%
+\begin{document}
+%%%%%%%%%%%%%%%%
+
+% Outcomment only when entries are known. Otherwise leave as is and
+%   default values will be used.
+%\setcounter{page}{1}
+%\VOLUME{00}%
+%\NO{0}%
+%\MONTH{Xxxxx}% (month or a similar seasonal id)
+%\YEAR{0000}% e.g., 2005
+%\FIRSTPAGE{000}%
+%\LASTPAGE{000}%
+%\SHORTYEAR{00}% shortened year (two-digit)
+%\ISSUE{0000} %
+%\LONGFIRSTPAGE{0001} %
+%\DOI{10.1287/xxxx.0000.0000}%
+
+% Author's names for the running heads
+% Sample depending on the number of authors;
+% \RUNAUTHOR{Jones}
+% \RUNAUTHOR{Jones and Wilson}
+% \RUNAUTHOR{Jones, Miller, and Wilson}
+% \RUNAUTHOR{Jones et al.} % for four or more authors
+% Enter authors following the given pattern:
+\RUNAUTHOR{Shaw, Dannelly, Calcagno, Kuzma}
+
+% Title or shortened title suitable for running heads. Sample:
+% \RUNTITLE{Bundling Information Goods of Decreasing Value}
+% Enter the (shortened) title:
+\RUNTITLE{DoD Algorithmic Job Placement}
+
+% Full title. Sample:
+% \TITLE{Bundling Information Goods of Decreasing Value}
+% Enter the full title:
+\TITLE{Algorithmic Preference Matching in the Department of Defense}
+
+% Block of authors and their affiliations starts here:
+% NOTE: Authors with same affiliation, if the order of authors allows,
+%   should be entered in ONE field, separated by a comma.
+%   \EMAIL field can be repeated if more than one author
+\ARTICLEAUTHORS{%
+\AUTHOR{Ian Shaw, Zac Dannelly, Drew Calcagno, Richard Kuzma}
+\AFF{United States Navy, 
+\EMAIL{ianedwardshaw@gmail.com},
+\EMAIL{dannellyzw@gmail.com}} %, \URL{}}
+% Enter all authors
+} % end of the block
+
+\ABSTRACT{%
+\input{Sections/Abstract.tex}
+}%
+
+% Sample
+%\KEYWORDS{deterministic inventory theory; infinite linear programming duality;
+%  existence of optimal policies; semi-Markov decision process; cyclic schedule}
+
+% Fill in data. If unknown, outcomment the field
+\KEYWORDS{Navy, Binary Optimization, Ordinal Preferences} \HISTORY{This paper was
+first submitted on April 12, 1922 and has been with the authors for
+83 years for 65 revisions.}
+
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Samples of sectioning (and labeling) in MNSC
+% NOTE: (1) \section and \subsection do NOT end with a period
+%       (2) \subsubsection and lower need end punctuation
+%       (3) capitalization is as shown (title style).
+%
+%\section{Introduction.}\label{intro} %%1.
+%\subsection{Duality and the Classical EOQ Problem.}\label{class-EOQ} %% 1.1.
+%\subsection{Outline.}\label{outline1} %% 1.2.
+%\subsubsection{Cyclic Schedules for the General Deterministic SMDP.}
+%  \label{cyclic-schedules} %% 1.2.1
+%\section{Problem Description.}\label{problemdescription} %% 2.
+
+% Text of your paper here
+
+\section{Introduction}
+
+\input{Sections/Introduction.tex}
+
+\section{Problem Description}
+
+\input{Sections/Problem_Desc.tex}
+
+\subsection{Solution Description}
+
+\input{Sections/Solution_Description.tex}
+
+\subsection{Algorithm}
+
+\input{Sections/Algo.tex}
+
+\subsubsection{Prototype Formulation}
+\label{Matching}
+
+\input{Sections/BeatDA}
+
+\subsubsection{Co-Location}
+\label{CoLocation}
+
+\input{Sections/CoLocation.tex}
+
+\subsubsection{Quality Spread}
+\label{QualitySpread}
+
+\input{Sections/QualitySpread.tex}
+
+\section{Weighted Importance}
+\label{Importance}
+
+\input{Sections/PreferredCommands.tex}
+
+\section{Retention}
+\label{Retention}
+
+\input{Sections/Retention.tex}
+
+\subsection{Strategy Proofness}
+
+\input{Sections/Strategy_Proof.tex}
+
+\subsection{Post-Match Metrics}\label{post-match}
+
+\input{Sections/Post_Match_Metrics.tex}
+
+\section{Running the Prototype}
+
+\subsection{Overview}
+
+\input{Sections/Overview.tex}
+
+\subsection{Data Sources}
+
+\input{Sections/Data.tex}
+
+\subsection{Results}
+
+\subsubsection{Algorithm Results}
+
+\input{Sections/Algo_Results.tex}
+
+\section{Future Work}
+
+\input{Sections/Future_Work.tex}
+
+
+% Appendix here
+% Options are (1) APPENDIX (with or without general title) or
+%             (2) APPENDICES (if it has more than one unrelated sections)
+% Outcomment the appropriate case if necessary
+%
+% \begin{APPENDIX}{<Title of the Appendix>}
+% \end{APPENDIX}
+%
+%   or
+%
+\begin{APPENDICES}
+\section{Notation}
+
+\input{Sections/Notation.tex}
+
+% \section{Extended Notes on Formulations}
+
+% \subsection{Matrix Formulation of Prototype Formulation}
+% \input{Sections/BeatDA_extended} 
+
+% \subsection{Matrix formulation of Co-Location Constraint}
+% \input{Sections/CoLocation_extended.tex} 
+
+\end{APPENDICES}
+
+
+% Acknowledgments here
+\ACKNOWLEDGMENT{The authors gratefully acknowledge the support of the Navy Medical Corps, Explosive Ordinance Disposal, and Cryptologic Warfare community in their support of the prototype effort 
+Furthermore they thank the Journal of Management Science for its review and support of the research.}
+
+
+% References here (outcomment the appropriate case)
+
+% CASE 1: BiBTeX used to constantly update the references
+%   (while the paper is being written).
+\bibliographystyle{informs2014} % outcomment this and next line in Case 1
+\bibliography{Sections/DM} % if more than one, comma separated
+
+
+%%%%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%%%%
+
