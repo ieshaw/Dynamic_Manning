@@ -1,6 +1,6 @@
 Throughout the paper, we will reference the notation listed in this section.
 
-\begin{align}
+\begin{align*}
 m &= \text{number of different jobs available}\\
 n &= \text{number of persons}\\
 \vec{P^S_i} &= \text{Preference vector of job seeker $i$, } \in \mathbb{Z}^{+, m \times 1} \\
@@ -19,12 +19,12 @@ x_{i,j} &= \begin{cases}
 1 & \text{if $S_i$ is slated for job $j$}\\
 0 & \text{otherwise}
 \end{cases} \\
-C &= \text{Co-Location Matrix, upper triangular}\\
+C &= \text{Co-Location Matrix, symmetric}\\
 C_{ij} &= \begin{cases}
-1 & j > i, \text{ and  Seeker $i$ requests co-location with Seeker $j$} \\
-0 & j\leq i, \text{ or Seeker $e_{i,1}$ does not request co-location}
+1 & \text{Seekers $i$i and $j$ requests co-location} \\
+0 & \text{otherwise}
 \end{cases} \\
 n_c &= \text{number of couples requesting co-location}\\
-&= \frac{1}{2}\sum_{i=1}^n\sum_{j=1}^n C_{ij}\\
-\end{align}
+&= \frac{1}{2}\sum_{i=1}^n\sum_{j=1}^n C_{ij}
+\end{align*}
 

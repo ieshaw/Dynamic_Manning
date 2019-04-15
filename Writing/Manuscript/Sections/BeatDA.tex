@@ -1,16 +1,14 @@
-The optimization function used in our investigation takes the form:
+The binary-integer program used in our takes the form:
 
 \begin{align}
-\min \qquad & \sum_{i = 1}^{n} \sum_{j = 1}^{m} f(X_{ij}) \label{obj_func}\\
+\min \qquad &  f(X) \label{obj_func}\\
 \text{ such that } \qquad & \sum_{j=1}^m X_{i,j} \leq 1 \quad  \forall i \in \{1, \dots n\} \label{one_job}\\
 & \sum_{i = 1}^{i=n} \sum_{j = 1}^{m}X_{ij} = \min \left(n,\sum_{j = 1}^{m}a_j \right) \quad  \forall j \in \{1, \dots m\}  \label{all_filled}\\
 & \sum_{i=1}^n X_{ij} \leq a_j \quad  \forall j \in \{1, \dots m\} \label{capacity} \\
-& \sum \sum X_{ij}\mathbf{1}(X_{ij} P^S_{i} \leq w) \geq \sum \sum X_{ij}\mathbf{1}(X^{DA}_{ij} P^S_{i} \leq w) \quad \forall w \in \{1,5,10\} \\ \label{s_da}
-& \sum \sum X_{ij}\mathbf{1}(X_{ij} P^O_{ji} \leq w) \geq \sum \sum X_{ij}\mathbf{1}(X^{DA}_{ij} P^O_{ji} \leq w) \quad \forall w \in \{1,5,10\} \\ \label{o_da}
+& \sum \sum X_{ij}\mathbf{1}(X_{ij} P^S_{i} \leq w) \geq \sum \sum X_{ij}\mathbf{1}(X^{DA}_{ij} P^S_{i} \leq w) \quad \forall w \in \{1,5,10\} \label{s_da}\\ 
+& \sum \sum X_{ij}\mathbf{1}(X_{ij} P^O_{ji} \leq w) \geq \sum \sum X_{ij}\mathbf{1}(X^{DA}_{ij} P^O_{ji} \leq w) \quad \forall w \in \{1,5,10\} \label{o_da}
 \end{align}
 
-The Goodness Function $f$ is the strategic objective function of the assignment process. 
+The objective function $f$ below is designed to improve over deferred acceptance in average preference sum, a metric described in Section \ref{pref_sum}. 
 
-\[f(X_{ij}) = X_{ij}(P^S_{ij} + P^O_{ji})\]
-
-We choose this formulation in order to improve over deferred acceptance in average preference match.
+\[f(X) = \sum_{i=1}^n \sum_{j=1}^m X_{ij}(P^S_{ij} + P^O_{ji})\]

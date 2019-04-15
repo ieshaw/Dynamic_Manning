@@ -1,12 +1,11 @@
 The co-location constraint takes the form
 
-\[ \frac{1}{n_c} \sum_{i=1}^{n_e} C(e_1, e_2) \geq 0.95 \quad \texttt{at least 95\% of couples are co-located}
-\]
+\[ \frac{1}{n_c} \sum_{i=1}^{n}\sum_{j=i+1}^{n} \mathcal{D}(C_{ij}) \geq 0.95 \quad \texttt{at least 95\% of couples are co-located} \]
 
-Co-location Function $C$ returns $1$ if the couple is considered co-located, 0 if not or if single. Here we choose 50 miles between job locations to be consider co-located because that is the threshold for receiving dislocation allowance (DLA) for a permanent change of station (PCS) according to the Joint Travel Regulations (JTR). The location function $L(S_i)$ returns the lat/long location of the stationing for Seeker $i$. 
+Distance Function $\mathcal{D}$ returns $1$ if the couple is considered co-located, 0 if not or if single. Here we choose 50 miles between job locations to be consider co-located because that is the threshold for receiving dislocation allowance (DLA) for a permanent change of station (PCS) according to the Joint Travel Regulations (JTR). The function $L(S_i)$ returns the location of the proposed station for Seeker $i$. 
 
-\[C(e_1,e_2) = \begin{cases}
-0 \quad & \text{ if } e_2 == 0 \\
+\[\mathcal{D}(C_{ij}) = \begin{cases}
+0 \quad & \text{ if } C_{ij}== 0 \\
  \mathbf{1}\big( || L(S_i) - L(S_j) || \leq 50 \big) \quad & \text{ otherwise }
  \end{cases}\]
 
