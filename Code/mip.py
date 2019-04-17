@@ -35,12 +35,16 @@ def mip(S_df, O_df, A_df, window_dict, print_to_screen=True):
     m_a = A_df.sum().sum()
     k = min(n,m_a)
     X = cp.Variable((m,n), boolean=True)
-    f = cp.trace(cp.matmul(X, (P_S.T + P_O)))
+    f = cp.trace(cp.matmul(X, (P_S.T + P_O)))  
     #EOD
     #window_dict['s']['1'] = 10
     #Med
     #window_dict['s']['1'] = 25
     #window_dict['s']['5'] = 37
+    obj = cp.Problem(cp.Minimize(f),[cp.atoms.affine.reshape.reshape(cp.sum(X,axis=1),(m,1)) <= A,
+                cp.atoms.affine.reshape.reshape(cp.sum(X,axis=0),(1,n)) <= 1,
+                cp.sum(X) <= k + 0.5, cp.sum(X) >= k - 0.5])
+    '''
     obj = cp.Problem(cp.Minimize(f),[cp.atoms.affine.reshape.reshape(cp.sum(X,axis=1),(m,1)) <= A,
                 cp.atoms.affine.reshape.reshape(cp.sum(X,axis=0),(1,n)) <= 1,
                 cp.sum(X) <= k + 0.5, cp.sum(X) >= k - 0.5,
@@ -50,6 +54,7 @@ def mip(S_df, O_df, A_df, window_dict, print_to_screen=True):
                 cp.sum(cp.sum(cp.multiply(cp.pos(1- cp.pos(P_O.T - 1)),X))) >= float(window_dict['o']['1']) - 0.5,
                 cp.sum(cp.sum(cp.multiply(cp.pos(1- cp.pos(P_O.T - 5)),X))) >= float(window_dict['o']['5']) - 0.5,
                 cp.sum(cp.sum(cp.multiply(cp.pos(1- cp.pos(P_O.T - 10)),X))) >= float(window_dict['o']['10']) - 0.5])
+    '''
     #mip_solvers for cvxpy [CBC, GLPK_MI, CPLEX, ECOS_BB, GUROBI]
     obj.solve(solver=cp.ECOS_BB, verbose=False, mi_max_iters=1000)
     #obj.solve(solver=cp.GLPK_MI, verbose=False)

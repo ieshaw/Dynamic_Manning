@@ -1,0 +1,24 @@
+The goal, and successful result, of the prototype was to display that we could improve upon deferred acceptance by sacrificing stability for some other objective. The objective we chose was average preference sum for the sake of the simple narrative that we can improve placement `on average'.
+
+\subsubsection{Average Preference Sum}
+\label{pref_sum}
+Preference sum is the addition of the ordinal preference of a sailor for their assigned command with the ordinal preference of the command for their assigned sailor. For example if a sailor is assigned their most preferred command but the command ranked the sailor third, the preference sum would have a value of 4. The average of this sum accross the market provides a high level understanding of how the matching system performs in aggregate.
+
+\subsubsection{Table of Results}
+
+The results from each dataset are found in Table \ref{tab1}.
+
+\begin{table}[h]
+\TABLE
+{Results of Prototype.\label{tab1}}
+{\begin{tabular}{ |c||c|c|  }
+ \hline
+ Data Sete & Deferred Acceptance &Prototype BIP\\
+ \hline
+ Cyber Officers  & 9.263   & 6.42 \\
+ EOD  & 3.55   & 3.45\\
+ Medical Corps  & 31.19   & 16.87\\
+ \hline
+\end{tabular}}
+{The metrics are the average preference sum of each algorithm's matching results.}
+\end{table}

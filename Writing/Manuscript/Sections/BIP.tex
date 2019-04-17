@@ -1,0 +1,19 @@
+The constraints we apply are the same as the college admissions problem \citep{1985_Roth}. This constellation of constraints not only fits our immedeate needs, but has the added benefit of guaranteed feasibility since the deferred acceptance output is a feasible solution.
+
+\begin{enumerate}
+\item Each sailor can only be assigned to one position (\ref{one_job})
+\item Either all the jobs are filled or every job seeker is placed (\ref{all_filled})
+\item Each job can fill up to but not exceed the allocated number of positions (\ref{capacity})
+\end{enumerate}
+
+The binary-integer program used in our takes the form:
+
+\begin{align}
+\min \qquad &  f(X) \label{obj_func}\\
+\text{ such that } \qquad & \sum_{j=1}^m X_{i,j} \leq 1 \quad  \forall i \in \{1, \dots n\} \label{one_job}\\
+& \sum_{i = 1}^{i=n} \sum_{j = 1}^{m}X_{ij} = \min \left(n,\sum_{j = 1}^{m}a_j \right) \quad  \forall j \in \{1, \dots m\}  \label{all_filled}\\
+& \sum_{i=1}^n X_{ij} \leq a_j \quad  \forall j \in \{1, \dots m\} \label{capacity}
+%& \sum \sum X_{ij}\mathbf{1}(X_{ij} P^S_{i} \leq w) \geq \sum \sum X_{ij}\mathbf{1}(X^{DA}_{ij} P^S_{i} \leq w) \quad \forall w \in \{1,5,10\} \label{s_da}\\ 
+%& \sum \sum X_{ij}\mathbf{1}(X_{ij} P^O_{ji} \leq w) \geq \sum \sum X_{ij}\mathbf{1}(X^{DA}_{ij} P^O_{ji} \leq w) \quad \forall w \in \{1,5,10\} \label{o_da}
+\end{align}
+
