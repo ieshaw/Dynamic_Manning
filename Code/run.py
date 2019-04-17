@@ -73,7 +73,6 @@ def old_main():
     print(out_df)
     out_df.to_csv(output_dir + 'post_match.csv', header=True, index=True)
 
-
 def main():
     if len(sys.argv) != 2:
         raise ValueError('''
@@ -97,6 +96,7 @@ def main():
     print('Matching DA')
     X_da = da(S_df, O_df, A_df, optimal='s')
     X_check(X_da, A_df)
+    X_da.to_csv(output_dir + 'X_da.csv', header=True, index=True)
     tp_dict = top_perc(S_df,'s', X_da ,A_df)
     windows = [1,5,10]
     pref_window_dict = {'s': {}, 'o': {}}
@@ -107,6 +107,7 @@ def main():
         pref_window_dict['o'][str(window)] = tp_dict['{}_o_count'.format(str(window))]
     print('Matching MIP')
     X_mip = mip(S_df, O_df, A_df, pref_window_dict, print_to_screen=False)
+    X_mip.to_csv(output_dir + 'X_mip.csv', header=True, index=True)
     x_dict = {'mip': X_mip, 'da': X_da}
     p_dict = {'s': S_df, 'o': O_df}
     out_dict = {}
@@ -118,7 +119,7 @@ def main():
             out_dict[x].update(top_perc(p_dict[p], p, x_dict[x], A_df))
     out_df = pd.DataFrame.from_dict(out_dict)
     print(out_df)
-    #out_df.to_csv(output_dir + 'post_match.csv', header=True, index=True)
+    out_df.to_csv(output_dir + 'post_match.csv', header=True, index=True)
 
 if __name__ == '__main__':
     main()

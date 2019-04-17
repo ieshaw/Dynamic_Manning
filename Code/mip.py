@@ -24,23 +24,35 @@ def mip(S_df, O_df, A_df, window_dict, print_to_screen=True):
     S_df.sort_index(axis=0).sort_index(axis=1,inplace=True)
     O_df.sort_index(axis=0).sort_index(axis=1,inplace=True)
     A_df.sort_index()
-    S_norm_df = (S_df-S_df.min())/(S_df.max()-S_df.min())
-    O_norm_df = (O_df-O_df.min())/(O_df.max()-O_df.min())
-    P_S =  S_norm_df.values
-    P_O =  O_norm_df.values
+    #S_norm_df = (S_df-S_df.min())/(S_df.max()-S_df.min())
+    #O_norm_df = (O_df-O_df.min())/(O_df.max()-O_df.min())
+    #P_S =  S_norm_df.values
+    #P_O =  O_norm_df.values
+    P_S =  S_df.values
+    P_O =  O_df.values
     A = A_df.values
     m,n = S_df.shape 
     m_a = A_df.sum().sum()
     k = min(n,m_a)
     X = cp.Variable((m,n), boolean=True)
     f = cp.trace(cp.matmul(X, (P_S.T + P_O)))
-    obj = cp.Problem(cp.Minimize(f),
-            [cp.atoms.affine.reshape.reshape(cp.sum(X,axis=1),(m,1)) <= A,
+    #EOD
+    #window_dict['s']['1'] = 10
+    #Med
+    #window_dict['s']['1'] = 25
+    #window_dict['s']['5'] = 37
+    obj = cp.Problem(cp.Minimize(f),[cp.atoms.affine.reshape.reshape(cp.sum(X,axis=1),(m,1)) <= A,
                 cp.atoms.affine.reshape.reshape(cp.sum(X,axis=0),(1,n)) <= 1,
                 cp.sum(X) <= k + 0.5, cp.sum(X) >= k - 0.5,
-                cp.sum(cp.sum(cp.max(1- cp.max(cp.multiply(X,P_S) - 1)))) >= float(window_dict['s']['1']) - 0.5] )
+                cp.sum(cp.sum(cp.multiply(cp.pos(1- cp.pos(P_S - 1)),X))) >= float(window_dict['s']['1']) - 0.5,
+                cp.sum(cp.sum(cp.multiply(cp.pos(1- cp.pos(P_S - 5)),X))) >= float(window_dict['s']['5']) - 0.5,
+                cp.sum(cp.sum(cp.multiply(cp.pos(1- cp.pos(P_S - 10)),X))) >= float(window_dict['s']['10']) - 0.5,
+                cp.sum(cp.sum(cp.multiply(cp.pos(1- cp.pos(P_O.T - 1)),X))) >= float(window_dict['o']['1']) - 0.5,
+                cp.sum(cp.sum(cp.multiply(cp.pos(1- cp.pos(P_O.T - 5)),X))) >= float(window_dict['o']['5']) - 0.5,
+                cp.sum(cp.sum(cp.multiply(cp.pos(1- cp.pos(P_O.T - 10)),X))) >= float(window_dict['o']['10']) - 0.5])
     #mip_solvers for cvxpy [CBC, GLPK_MI, CPLEX, ECOS_BB, GUROBI]
     obj.solve(solver=cp.ECOS_BB, verbose=False, mi_max_iters=1000)
+    #obj.solve(solver=cp.GLPK_MI, verbose=False)
     status = obj.status
     if status in ['optimal', 'optimal_inaccurate']:
         X_df = pd.DataFrame(X.value, index=S_df.index, columns=S_df.columns)
