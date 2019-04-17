@@ -7,6 +7,7 @@ from check import check_inputs, X_check
 from da import da
 from mip import mip
 from post_match import mu_metrics, top_perc
+from pref_metrics import pref_metrics, correlation
 
 '''
 When this script runs, you will point it to a directory with 3 csv's
@@ -28,7 +29,29 @@ After running this script the input directory will have a sub directory
 
 In this sub directory there will be several files
 
-    X_mip.csv, X_da_s.csv, X_da_o.csv, post_match.csv
+    Metrics_s.csv, Metrics_o.csv, Similarity_o.csv, Similarity_s.csv
+    Corr_s.csv, Corr_o.csv, X_mip.csv, X_da_s.csv, X_da_o.csv, 
+    post_match.csv
+
+    Metrics_s.csv: columns 'Competitiveness' and 'Specialization'
+            rows are seeker names
+
+    Metrics_o.csv: columns 'Competitiveness' and 'Specialization'
+            rows are job names
+
+    Similarity_s.csv: rows and columns are seeker names
+            entries are their similarity, diagonal are 1's
+
+    Similarity_o.csv: rows and columns are job names
+            entries are their similarity, diagonal are 1's
+
+    Corr_s.csv: rows are seeker names, values are correlation
+            of a seeker's preferences with the preferences expressed
+            for them by jobs
+
+    Corr_o.csv: rows are job names, values are correlation
+            of a job's preferences with the preferences expressed
+            for them by seekers
 
     X_mip.csv: columns seeker names, rows jobs names,
             assignments by MIP
@@ -46,32 +69,6 @@ In this sub directory there will be several files
             metrics are the gap_mu and top 1/5/10 counts and ratios
             matching algos are mip, da_s, da_o
     '''
-
-def old_main():
-    print('Matching MIP')
-    X_mip = mip(S_df, O_df, A_df)
-    X_check(X_mip, A_df)
-    X_mip.to_csv(output_dir + 'X_mip.csv', header=True, index=True)
-    print('Matching DA Seeker Optimal')
-    X_da_s = da(S_df, O_df, A_df, optimal='s')
-    X_check(X_da_s, A_df)
-    X_da_s.to_csv(output_dir + 'X_da_s.csv', header=True, index=True)
-    print('Matching DA Job Owner Optimal')
-    X_da_o = da(S_df, O_df, A_df, optimal='o')
-    X_check(X_da_o, A_df)
-    X_da_o.to_csv(output_dir + 'X_da_o.csv', header=True, index=True)
-    x_dict = {'mip': X_mip, 'da_s': X_da_s, 'da_o': X_da_o}
-    p_dict = {'s': S_df, 'o': O_df}
-    out_dict = {}
-    for x in x_dict:
-        print('Matching type: {}'.format(x))
-        mu_s, mu_o = mu_metrics(S_df, O_df, x_dict[x])
-        out_dict[x] = {'mu_s': mu_s, 'mu_o': mu_o, 'mu_combined': round(mu_s + mu_o,4),'gap_mu': round(mu_s - mu_o,4)}
-        for p in p_dict:
-            out_dict[x].update(top_perc(p_dict[p], p, x_dict[x], A_df))
-    out_df = pd.DataFrame.from_dict(out_dict)
-    print(out_df)
-    out_df.to_csv(output_dir + 'post_match.csv', header=True, index=True)
 
 def main():
     if len(sys.argv) != 2:
@@ -93,22 +90,29 @@ def main():
     O_df.index = O_df.index.map(str)
     A_df = pd.read_csv(data_dir + 'A.csv', index_col=0, names=['Job','Num_Positions'],skiprows=1)
     check_inputs(S_df, O_df, A_df)
-    print('Matching DA')
-    X_da = da(S_df, O_df, A_df, optimal='s')
-    X_check(X_da, A_df)
-    X_da.to_csv(output_dir + 'X_da.csv', header=True, index=True)
-    tp_dict = top_perc(S_df,'s', X_da ,A_df)
-    windows = [1,5,10]
-    pref_window_dict = {'s': {}, 'o': {}}
-    for window in windows:
-        pref_window_dict['s'][str(window)] = tp_dict['{}_s_count'.format(str(window))]
-    tp_dict = top_perc(O_df,'o', X_da ,A_df)
-    for window in windows:
-        pref_window_dict['o'][str(window)] = tp_dict['{}_o_count'.format(str(window))]
+    metrics_s, sim_o = pref_metrics(O_df)
+    metrics_s.to_csv(output_dir + 'Metrics_s.csv', header=True, index=True)
+    sim_o.to_csv(output_dir + 'Similarity_o.csv', header=True, index=True)
+    metrics_o, sim_s = pref_metrics(S_df)
+    metrics_o.to_csv(output_dir + 'Metrics_o.csv', header=True, index=True)
+    sim_s.to_csv(output_dir + 'Similarity_s.csv', header=True, index=True)
+    corr_s = correlation(S_df,O_df)
+    corr_s.to_csv(output_dir + 'Corr_s.csv', header=True, index=True)
+    corr_o = correlation(S_df,O_df)
+    corr_o.to_csv(output_dir + 'Corr_o.csv', header=True, index=True)
     print('Matching MIP')
-    X_mip = mip(S_df, O_df, A_df, pref_window_dict, print_to_screen=False)
+    X_mip = mip(S_df, O_df, A_df)
+    X_check(X_mip, A_df)
     X_mip.to_csv(output_dir + 'X_mip.csv', header=True, index=True)
-    x_dict = {'mip': X_mip, 'da': X_da}
+    print('Matching DA Seeker Optimal')
+    X_da_s = da(S_df, O_df, A_df, optimal='s')
+    X_check(X_da_s, A_df)
+    X_da_s.to_csv(output_dir + 'X_da_s.csv', header=True, index=True)
+    print('Matching DA Job Owner Optimal')
+    X_da_o = da(S_df, O_df, A_df, optimal='o')
+    X_check(X_da_o, A_df)
+    X_da_o.to_csv(output_dir + 'X_da_o.csv', header=True, index=True)
+    x_dict = {'mip': X_mip, 'da_s': X_da_s, 'da_o': X_da_o}
     p_dict = {'s': S_df, 'o': O_df}
     out_dict = {}
     for x in x_dict:

@@ -88,7 +88,9 @@
 \AUTHOR{Ian Shaw, Zac Dannelly, Drew Calcagno, Richard Kuzma}
 \AFF{United States Navy, 
 \EMAIL{ianedwardshaw@gmail.com},
-\EMAIL{dannellyzw@gmail.com}} %, \URL{}}
+\EMAIL{dannellyz@gmail.com},
+\EMAIL{drewcalcgno@gmail.com}}
+ %, \URL{}}
 % Enter all authors
 } % end of the block
 
@@ -101,9 +103,7 @@
 %  existence of optimal policies; semi-Markov decision process; cyclic schedule}
 
 % Fill in data. If unknown, outcomment the field
-\KEYWORDS{Navy, Binary Optimization, Ordinal Preferences} \HISTORY{This paper was
-first submitted on April 12, 1922 and has been with the authors for
-83 years for 65 revisions.}
+\KEYWORDS{Navy, Binary Optimization, Ordinal Preferences} \HISTORY{This paper is currently pre-submission. Do not distribute.}
 
 \maketitle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -122,19 +122,19 @@ first submitted on April 12, 1922 and has been with the authors for
 
 % Text of your paper here
 
-\section{Introduction}
-
-\input{Sections/Introduction.tex}
-
 \section{Problem Description}
 
 \input{Sections/Problem_Desc.tex}
 
-\subsection{Solution Description}
+\section{Solution Description}
 
 \input{Sections/Solution_Description.tex}
 
-\subsection{Algorithm}
+\subsection{Strategy Proofness}
+
+\input{Sections/Strategy_Proof.tex}
+
+\subsection{Binary-Integer Program}
 
 \input{Sections/Algo.tex}
 
@@ -153,27 +153,23 @@ first submitted on April 12, 1922 and has been with the authors for
 
 \input{Sections/QualitySpread.tex}
 
-\section{Weighted Importance}
+\subsubsection{Weighted Importance}
 \label{Importance}
 
 \input{Sections/PreferredCommands.tex}
 
-\section{Retention}
+\subsubsection{Retention}
 \label{Retention}
 
 \input{Sections/Retention.tex}
 
-\subsection{Strategy Proofness}
-
-\input{Sections/Strategy_Proof.tex}
-
-\subsection{Post-Match Metrics}\label{post-match}
+\section{Post-Match Metrics}\label{post-match}
 
 \input{Sections/Post_Match_Metrics.tex}
 
 \section{Running the Prototype}
 
-\subsection{Overview}
+\subsection{Practical Considerations}
 
 \input{Sections/Overview.tex}
 
@@ -181,9 +177,7 @@ first submitted on April 12, 1922 and has been with the authors for
 
 \input{Sections/Data.tex}
 
-\subsection{Results}
-
-\subsubsection{Algorithm Results}
+\subsection{Prototype Results}
 
 \input{Sections/Algo_Results.tex}
 
@@ -219,7 +213,7 @@ first submitted on April 12, 1922 and has been with the authors for
 
 
 % Acknowledgments here
-\ACKNOWLEDGMENT{The authors gratefully acknowledge the support of the Navy Medical Corps, Explosive Ordinance Disposal, and Cryptologic Warfare community in their support of the prototype effort 
+\ACKNOWLEDGMENT{The authors gratefully acknowledge the support of the Navy Medical Corps, Explosive Ordinance Disposal, and Cryptologic Warfare community in their support of the prototype effort. 
 Furthermore they thank the Journal of Management Science for its review and support of the research.}
 
 

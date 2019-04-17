@@ -1,7 +1,7 @@
 # Dynamic_Manning
 The Repository for the Dynamic Manning efforts of the Naval Algorithm team.
 
-We proposed prototypes of our algorithm ideas in our article ["Good Will Hunting: The Strategic Threat of Poor Talent Management"](https://warontherocks.com/2018/12/good-will-hunting-the-strategic-threat-of-poor-talent-management/). 
+We proposed prototypes of our algorithm ideas in our article ["Good Will Hunting: The Strategic Threat of Poor Talent Management"](https://warontherocks.com/2018/12/good-will-hunting-the-strategic-threat-of-poor-talent-management/).  The summary article for the two months of this project is found in [Proceedings](<https://www.usni.org/magazines/proceedings/2019/april/innovation-talk-cheap-start-innovating>).
 
 Our effort is to develop a detailing marketplace to improve upon the Department of Defense's process of placing servicemembers in jobs around the world. The DoD embodies a unique situation where it is a bureaucracy with a 'captive' job market; entrance is almost exclusively bottom up, many members are obligated to stay due to multi-year contracts, and job movement is compulsory if ordered to do so. The bureaucracy around this process has proven slow and non-optimal at accomplishing this piece of the national mission, this is our attempt to help make incrememtal improvements enabled by technology.  Our ultimate goal is to leverage algorithms as the building blocks of machine learning application in a future state. 
 
