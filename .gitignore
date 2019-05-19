@@ -3,10 +3,12 @@
 dm/
 test_data/
 debug_data/
+Submission/
 
 # Latex Specific
 Output/
 *.gz
+*.synctex
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
